@@ -9,8 +9,13 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessPiece {
+    private final ChessGame.TeamColor pieceColor;
+    private final ChessPiece.PieceType type;
+
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -29,7 +34,7 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        return teamColor;
+        return pieceColor;
     }
 
     /**
@@ -37,7 +42,7 @@ public class ChessPiece {
      */
     public PieceType getPieceType() {
 
-        return pieceType;
+        return type;
     }
 
     /**
