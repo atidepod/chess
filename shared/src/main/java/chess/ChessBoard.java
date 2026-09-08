@@ -20,7 +20,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        ChessPiece[position[0]][position[1]] =
+        rowIndex = position.getRow()-1;
+        colIndex = position.getColumn()-1;
+        board[rowIndex][colIndex] = piece;
+
     }
 
     /**
