@@ -20,7 +20,6 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
-        return ;
     }
 
     /**
