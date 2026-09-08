@@ -7,6 +7,10 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessMove {
+    private final ChessPosition startPosition;
+    private final ChessPosition endPosition;
+    private final ChessPiece.pieceType promotionPiece;
+
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
@@ -16,7 +20,7 @@ public class ChessMove {
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
-        return getStartPosition();
+        return startPosition();
 
     }
 
@@ -25,7 +29,7 @@ public class ChessMove {
      */
     public ChessPosition getEndPosition() {
 
-        return getEndPosition();
+        return endPosition();
     }
 
     /**
@@ -36,6 +40,6 @@ public class ChessMove {
      */
     public ChessPiece.PieceType getPromotionPiece() {
 
-        return getPromotionPiece();
+        return promotionPiece();
     }
 }
