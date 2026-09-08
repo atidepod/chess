@@ -12,8 +12,12 @@ public class ChessGame {
 
 
     public ChessGame() {
-        public ChessBoard;
-        ChessBoard.resetBoard;
+        private ChessBoard board;
+        private TeamColor teamTurn;
+        this.board = new ChessBoard;
+        this.board.resetBoard();
+        this.teamTurn = TeamColor.WHITE;
+        
 
     }
 
