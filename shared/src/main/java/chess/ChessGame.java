@@ -12,6 +12,8 @@ public class ChessGame {
 
 
     public ChessGame() {
+        public ChessBoard;
+        ChessBoard.resetBoard;
 
     }
 
