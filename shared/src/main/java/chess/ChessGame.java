@@ -20,7 +20,7 @@ public class ChessGame {
      */
     public TeamColor getTeamTurn() {
 
-        return teamTurn;
+        return ;
     }
 
     /**
