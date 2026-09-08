@@ -9,15 +9,15 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessGame {
-
+    private ChessBoard board;
+    private TeamColor teamTurn;
 
     public ChessGame() {
-        private ChessBoard board;
-        private TeamColor teamTurn;
-        this.board = new ChessBoard;
+
+        this.board = new ChessBoard();
         this.board.resetBoard();
         this.teamTurn = TeamColor.WHITE;
-        
+
 
     }
 
@@ -26,7 +26,7 @@ public class ChessGame {
      */
     public TeamColor getTeamTurn() {
 
-        return ;
+        return teamTurn;
     }
 
     /**
