@@ -41,10 +41,7 @@ public class ChessPiece {
     /**
      * @return which type of chess piece this piece is
      */
-    public PieceType getPieceType() {
-
-        return type;
-    }
+    public PieceType getPieceType() { return type; }
 
     /**
      * Calculates all the positions a chess piece can move to
