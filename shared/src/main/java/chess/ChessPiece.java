@@ -65,7 +65,6 @@ public class ChessPiece {
             }
             else if (occupant.getTeamColor() != this.pieceColor){
                 moves.add(new ChessMove(position, newPos, null));
-                break;
             }
 
 
@@ -383,14 +382,15 @@ public class ChessPiece {
                 moves.add(new ChessMove(position, newPos, null));
             } else if (occupant.getTeamColor() != this.pieceColor) {
                 moves.add(new ChessMove(position, newPos, null));
-                break;
             }
         }
         return moves;
 
 
     }
-    private pawnMoves(ChessBoard board, ChessPosition position){
+    private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition position){
+        List<ChessMove> moves = new ArrayList<>();
+
 
     }
 
