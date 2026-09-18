@@ -47,14 +47,17 @@ public class ChessPiece {
         PAWN
     }
     private kingMoves(ChessBoard board, ChessPosition position){
+        int[][] directions = {
+                
+        }
 
     }
     private Collection<ChessMove> queenMoves(ChessBoard board, ChessPosition position){
         List<ChessMove> moves = new ArrayList<>();
         int row = position.getRow();
         int col = position.getColumn();
-
-        for (int r = row+1; r <=8; r++){
+        int r = row+1;
+        while(r<=8) {
             ChessPosition newPos = new ChessPosition(r, col);
             ChessPiece occupant = board.getPiece(newPos);
 
@@ -68,8 +71,10 @@ public class ChessPiece {
             else {
                 break;
             }
+            r++;
         }
-        for (int r = row-1; r >=1; r--) {
+        r = row-1;
+        while(r>=1) {
             ChessPosition newPos = new ChessPosition(r, col);
             ChessPiece occupant = board.getPiece(newPos);
 
@@ -81,8 +86,10 @@ public class ChessPiece {
             } else {
                 break;
             }
+            r--;
         }
-        for (int c = col+1; c <=8; c++) {
+        int c = col +1;
+        while (c <=8) {
             ChessPosition newPos = new ChessPosition(row, c);
             ChessPiece occupant = board.getPiece(newPos);
 
@@ -94,8 +101,10 @@ public class ChessPiece {
             } else {
                 break;
             }
+            c++;
         }
-        for (int c = col-1; c >=1; c--) {
+        c = col-1;
+        while (c>=1) {
             ChessPosition newPos = new ChessPosition(row, c);
             ChessPiece occupant = board.getPiece(newPos);
 
@@ -107,9 +116,10 @@ public class ChessPiece {
             } else {
                 break;
             }
+            c--;
         }
-        int r = row-1;
-        int c = col-1;
+        r = row-1;
+        c = col-1;
         while (r>=1 && c>=1){
             ChessPosition newPos = new ChessPosition(r, c);
             ChessPiece occupant = board.getPiece(newPos);
@@ -126,8 +136,8 @@ public class ChessPiece {
             c--;
 
         }
-        int r = row-1;
-        int c = col-1;
+        r = row+1;
+        c = col-1;
         while (r<=8 && c>=1){
             ChessPosition newPos = new ChessPosition(r, c);
             ChessPiece occupant = board.getPiece(newPos);
@@ -144,8 +154,8 @@ public class ChessPiece {
             c--;
 
         }
-        int r = row-1;
-        int c = col-1;
+        r = row-1;
+        c = col+1;
         while (r>=1 && c<=8){
             ChessPosition newPos = new ChessPosition(r, c);
             ChessPiece occupant = board.getPiece(newPos);
@@ -162,8 +172,8 @@ public class ChessPiece {
             c++;
 
         }
-        int r = row-1;
-        int c = col-1;
+        r = row+1;
+        c = col+1;
         while (r<=8 && c<=8){
             ChessPosition newPos = new ChessPosition(r, c);
             ChessPiece occupant = board.getPiece(newPos);
