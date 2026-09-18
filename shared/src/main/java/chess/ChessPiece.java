@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -45,6 +46,32 @@ public class ChessPiece {
         ROOK,
         PAWN
     }
+    private kingMoves(ChessBoard board, ChessPosition position){
+
+    }
+    private queenMoves(ChessBoard board, ChessPosition position){
+
+    }
+    private Collection<ChessMove> rookMoves(ChessBoard board, ChessPosition position){
+        List<ChessMove> moves = new ArrayList<>();
+        int row = position.getRow();
+        int col = position.getColumn();
+
+        for (int r = row+1; r <=8; r++){
+            ChessPosition
+        }
+
+    }
+    private bishopMoves(ChessBoard board, ChessPosition position){
+
+    }
+    private knightMoves(ChessBoard board, ChessPosition position){
+
+    }
+    private pawnMoves(ChessBoard board, ChessPosition position){
+
+    }
+
 
     /**
      * @return Which team this chess piece belongs to
@@ -66,6 +93,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+
         return new ArrayList<>();
     }
 }
