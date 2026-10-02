@@ -2,6 +2,8 @@ package chess;
 
 import java.util.Collection;
 
+import static chess.ChessPiece.PieceType.KING;
+
 /**
  * A class that can manage a chess game, making moves on a board
  * <p>
@@ -55,7 +57,12 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece occupant = board.getPiece(startPosition);
+
+        if (occupant.getPieceType() == KING){
+
+        }
+
     }
 
     /**
