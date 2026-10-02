@@ -77,14 +77,20 @@ public class ChessGame {
         ChessPosition start = move.getStartPosition();
         ChessPosition end = move.getEndPosition();
         ChessPiece occupant = board.getPiece(start);
-        if (occupant.getTeamColor() != teamTurn){
-            throw InvalidMoveException;
-        }
         Collection<ChessMove> isLegal = validMoves(start);
-        if (!isLegal.contains(move){
+
+        if (occupant.getTeamColor() != teamTurn || !isLegal.contains(move)){
             throw InvalidMoveException;
         }
-        
+        board.addPiece(start, null);
+        board.addPiece(end, occupant);
+
+        if (move.getPromotionPiece() != null) {
+            board.addPiece(end, new ChessPiece(occupant.getTeamColor(), move.getPromotionPiece()));
+        }
+
+        teamTurn = (teamTurn TeamColor == WHITE)
+
 
 
 
