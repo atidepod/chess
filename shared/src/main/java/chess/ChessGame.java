@@ -74,14 +74,14 @@ public class ChessGame {
      * @param move chess move to perform
      * @throws InvalidMoveException if move is invalid
      */
-    public void makeMove(ChessMove move) {
+    public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPosition start = move.getStartPosition();
         ChessPosition end = move.getEndPosition();
         ChessPiece occupant = board.getPiece(start);
         Collection<ChessMove> isLegal = validMoves(start);
 
         if (occupant == null || isLegal == null || !isLegal.contains(move)) {
-            throw InvalidMoveException("Illegal move");
+            throw new InvalidMoveException("Illegal move");
         }
         board.addPiece(start, null);
         board.addPiece(end, occupant);
@@ -153,25 +153,10 @@ public class ChessGame {
     }
 
     public boolean isInCheckmate(TeamColor teamColor) {
-        ChessPosition kingPosition = null;
-        int numPieces = 0;
-
-        for (int row = 1; row <= 8; row++) {
-            for (int col = 1; col <= 8; col++) {
-
-                ChessPosition pos = new ChessPosition(row, col);
-                ChessPiece occupant = board.getPiece(pos);
-
-                if (occupant != null && occupant.getTeamColor() == teamColor) {
-
-                    numPieces++;
-
-                    if (occupant.getPieceType() == ChessPiece.PieceType.KING) {
-                        kingPosition = pos;
-                    }
-                }
-            }
+        if (!isInCheck(teamColor)){
+            return false;
         }
+
         ChessBoard snapshot = copyBoard(board);
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++){
@@ -202,25 +187,10 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        ChessPosition kingPosition = null;
-        int numPieces = 0;
-
-        for (int row = 1; row <= 8; row++) {
-            for (int col = 1; col <= 8; col++) {
-
-                ChessPosition pos = new ChessPosition(row, col);
-                ChessPiece occupant = board.getPiece(pos);
-
-                if (occupant != null && occupant.getTeamColor() == teamColor) {
-
-                    numPieces++;
-
-                    if (occupant.getPieceType() == ChessPiece.PieceType.KING) {
-                        kingPosition = pos;
-                    }
-                }
-            }
+        if (isInCheck(teamColor)){
+            return false;
         }
+
         ChessBoard snapshot = copyBoard(board);
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++){
@@ -235,6 +205,7 @@ public class ChessGame {
                     if (!isInCheck(teamColor)){
                         setBoard(snapshot);
                         return false;
+
                     }
                     setBoard(copyBoard(snapshot));
                 }
