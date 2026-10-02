@@ -134,7 +134,22 @@ public class ChessGame {
      *
      * @param teamColor which team to check for checkmate
      * @return True if the specified team is in checkmate
+     *
      */
+    public ChessBoard copyBoard(){
+        ChessBoard copy = new ChessBoard;
+        for (int row=1;row<=8;row++){
+            for (int col=1;col<=8;col++) {
+                ChessPosition pos = new ChessPosition(row,col);
+                ChessPiece occupant = board.getPiece(pos);
+                if (occupant != null) {
+                    copy.addPiece(pos, new ChessPiece());
+                }
+
+            }
+        }
+    }
+
     public boolean isInCheckmate(TeamColor teamColor) {
         ChessPosition kingPosition = null;
         int numPieces = 0;
@@ -165,7 +180,9 @@ public class ChessGame {
                 Collection<ChessMove> moves = validMoves(circle);
                 if (moves == null) continue;
                 for (ChessMove m : moves){
-                    ChessMove helpMove = makeMove(m);
+                    ChessBoard clone = original.clone();
+                    clone.makeMove(m);
+
                     if (!isInCheck(teamColor)){
                         setBoard(currentBoard);
                         return false;
