@@ -155,7 +155,7 @@ public class ChessGame {
         return copy;
     }
 
-    public boolean isInCheckmate(TeamColor teamColor) {
+    public boolean isInCheckmate(TeamColor teamColor) throws InvalidMoveException {
         if (!isInCheck(teamColor)){
             return false;
         }
@@ -189,7 +189,7 @@ public class ChessGame {
      * @param teamColor which team to check for stalemate
      * @return True if the specified team is in stalemate, otherwise false
      */
-    public boolean isInStalemate(TeamColor teamColor) {
+    public boolean isInStalemate(TeamColor teamColor) throws InvalidMoveException {
         if (isInCheck(teamColor)){
             return false;
         }
