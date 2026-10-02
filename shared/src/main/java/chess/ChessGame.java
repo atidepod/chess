@@ -105,8 +105,19 @@ public class ChessGame {
             for (int col=1;col<=8;col++){
                 ChessPosition pos = new ChessPosition(row,col);
                 ChessPiece occupant = board.getPiece(pos);
-                if (occupant.getPieceType() == ChessPiece.PieceType.KING){
+                if (occupant.getPieceType() == ChessPiece.PieceType.KING && occupant.getTeamColor() == teamColor){
                     kingPosition.add(pos);
+                }
+            }
+        }
+        for (int row=1;row<=8;row++){
+            for (int col=1;col<=8;col++){
+                ChessPosition circle = new ChessPosition(row,col);
+                ChessPiece enemy = board.getPiece(circle);
+                if (enemy.getTeamColor() != teamColor){
+                    Collection<ChessMove> inCheck = validMoves(circle);
+
+
                 }
             }
         }
