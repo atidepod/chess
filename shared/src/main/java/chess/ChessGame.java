@@ -73,8 +73,15 @@ public class ChessGame {
      * @param move chess move to perform
      * @throws InvalidMoveException if move is invalid
      */
-    public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+    public void makeMove(ChessMove move) {
+        ChessPiece new =
+        if (null){
+            throw InvalidMoveException;
+        }
+        else{
+
+        }
+
     }
 
     /**
