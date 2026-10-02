@@ -54,9 +54,7 @@ public class ChessBoard {
 
         return board[position.getRow()-1][position.getColumn()-1];
     }
-    public Collection<ChessPosition> findPiece(ChessPiece.PieceType type){
-        
-    }
+
 
     /**
      * Sets the board to the default starting board
