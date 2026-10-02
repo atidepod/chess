@@ -58,10 +58,12 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece occupant = board.getPiece(startPosition);
-
-        if (occupant.getPieceType() == KING){
+        if (occupant == null){
+            return null;
 
         }
+
+        return occupant.pieceMoves(board, startPosition);
 
     }
 
