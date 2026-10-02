@@ -80,7 +80,7 @@ public class ChessGame {
         ChessPiece occupant = board.getPiece(start);
         Collection<ChessMove> isLegal = validMoves(start);
 
-        if (occupant == null || isLegal == null || !isLegal.contains(move)) {
+        if (occupant == null || isLegal == null || !isLegal.contains(move) || occupant.getTeamColor() != teamTurn) {
             throw new InvalidMoveException("Illegal move");
         }
         board.addPiece(start, null);
@@ -101,7 +101,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPosition = null;
-        for (int row=1;row<=8;row++){
+        for (int row=1;row<=8 && kingPosition == null;row++){
             for (int col=1;col<=8;col++){
                 ChessPosition pos = new ChessPosition(row,col);
                 ChessPiece occupant = board.getPiece(pos);
@@ -110,6 +110,9 @@ public class ChessGame {
                     break;
                 }
             }
+        }
+        if (kingPosition == null){
+            return false;
         }
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++){
