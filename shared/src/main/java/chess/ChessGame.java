@@ -46,7 +46,7 @@ public class ChessGame {
      */
     public enum TeamColor {
         WHITE,
-        BLACK
+        BlACK
     }
 
     /**
@@ -89,11 +89,7 @@ public class ChessGame {
             board.addPiece(end, new ChessPiece(occupant.getTeamColor(), move.getPromotionPiece()));
         }
 
-        teamTurn = (teamTurn TeamColor == WHITE)
-
-
-
-
+        teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BlACK : TeamColor.WHITE;
     }
 
     /**
@@ -103,7 +99,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+
     }
 
     /**

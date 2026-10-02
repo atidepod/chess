@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -52,6 +53,9 @@ public class ChessBoard {
     public ChessPiece getPiece(ChessPosition position) {
 
         return board[position.getRow()-1][position.getColumn()-1];
+    }
+    public Collection<ChessPosition> findPiece(ChessPiece.PieceType type){
+        
     }
 
     /**
