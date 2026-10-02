@@ -447,7 +447,7 @@ public class ChessPiece {
                     moves.add(new ChessMove(position, dPos, ChessPiece.PieceType.BISHOP));
                 }
                 else {
-                moves.add(new ChessMove(position, dPos, null));
+                    moves.add(new ChessMove(position, dPos, null));
 
                 }
             }
