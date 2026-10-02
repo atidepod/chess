@@ -47,7 +47,7 @@ public class ChessGame {
      */
     public enum TeamColor {
         WHITE,
-        BlACK
+        BLACK
     }
 
     /**
@@ -80,8 +80,8 @@ public class ChessGame {
         ChessPiece occupant = board.getPiece(start);
         Collection<ChessMove> isLegal = validMoves(start);
 
-        if (occupant.getTeamColor() != teamTurn || !isLegal.contains(move)){
-            throw InvalidMoveException;
+        if (occupant == null || isLegal == null || !isLegal.contains(move)) {
+            throw InvalidMoveException("Illegal move");
         }
         board.addPiece(start, null);
         board.addPiece(end, occupant);
@@ -90,7 +90,7 @@ public class ChessGame {
             board.addPiece(end, new ChessPiece(occupant.getTeamColor(), move.getPromotionPiece()));
         }
 
-        teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BlACK : TeamColor.WHITE;
+        teamTurn = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
     }
 
     /**
@@ -107,6 +107,7 @@ public class ChessGame {
                 ChessPiece occupant = board.getPiece(pos);
                 if (occupant != null && occupant.getPieceType() == ChessPiece.PieceType.KING && occupant.getTeamColor() == teamColor){
                     kingPosition = pos;
+                    break;
                 }
             }
         }
@@ -136,12 +137,12 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      *
      */
-    public ChessBoard copyBoard(){
-        ChessBoard copy = new ChessBoard;
+    public ChessBoard copyBoard(ChessBoard source){
+        ChessBoard copy = new ChessBoard();
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++) {
                 ChessPosition pos = new ChessPosition(row,col);
-                ChessPiece occupant = board.getPiece(pos);
+                ChessPiece occupant = source.getPiece(pos);
                 if (occupant != null) {
                     copy.addPiece(pos, new ChessPiece(occupant.getTeamColor(), occupant.getPieceType()));
                 }
@@ -171,7 +172,7 @@ public class ChessGame {
                 }
             }
         }
-        ChessBoard snapshot = board.copyBoard();
+        ChessBoard snapshot = copyBoard(board);
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++){
                 ChessPosition circle = new ChessPosition(row,col);
@@ -186,14 +187,11 @@ public class ChessGame {
                         setBoard(snapshot);
                         return false;
                     }
-                    setBoard(snapshot.copyBoard());
+                    setBoard(copyBoard(snapshot));
                 }
-
-
             }
         }
         return true;
-
     }
 
     /**
