@@ -143,11 +143,12 @@ public class ChessGame {
                 ChessPosition pos = new ChessPosition(row,col);
                 ChessPiece occupant = board.getPiece(pos);
                 if (occupant != null) {
-                    copy.addPiece(pos, new ChessPiece());
+                    copy.addPiece(pos, new ChessPiece(occupant.getTeamColor(), occupant.getPieceType()));
                 }
 
             }
         }
+        return copy;
     }
 
     public boolean isInCheckmate(TeamColor teamColor) {
@@ -170,7 +171,7 @@ public class ChessGame {
                 }
             }
         }
-        ChessBoard original = getBoard();
+        ChessBoard snapshot = board.copyBoard();
         for (int row=1;row<=8;row++){
             for (int col=1;col<=8;col++){
                 ChessPosition circle = new ChessPosition(row,col);
@@ -180,13 +181,12 @@ public class ChessGame {
                 Collection<ChessMove> moves = validMoves(circle);
                 if (moves == null) continue;
                 for (ChessMove m : moves){
-                    ChessBoard clone = original.clone();
-                    clone.makeMove(m);
-
+                    makeMove(m);
                     if (!isInCheck(teamColor)){
-                        setBoard(currentBoard);
+                        setBoard(snapshot);
                         return false;
                     }
+                    setBoard(snapshot.copyBoard());
                 }
 
 
