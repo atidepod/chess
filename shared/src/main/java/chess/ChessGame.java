@@ -120,7 +120,7 @@ public class ChessGame {
                 if (moves == null) continue;
 
                 for (ChessMove m : moves){
-                    if(m.getEndPosition() == kingPosition){
+                    if(m.getEndPosition().equals(kingPosition)){
                         return true;
                     }
                 }
