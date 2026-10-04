@@ -59,6 +59,24 @@ public class ChessGame {
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
+    private void makeMoveSim(ChessMove move) throws InvalidMoveException {
+        ChessPosition start = move.getStartPosition();
+        ChessPosition end = move.getEndPosition();
+        ChessPiece piece = board.getPiece(start);
+
+        if (piece == null) throw new InvalidMoveException("No piece");
+
+        Collection<ChessMove> rawMoves = piece.pieceMoves(board, start);
+        if (!rawMoves.contains(move)) throw new InvalidMoveException("Illegal move");
+
+        board.addPiece(start, null);
+        board.addPiece(end, piece);
+
+        if (move.getPromotionPiece() != null) {
+            board.addPiece(end, new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
+        }
+    }
+
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         TeamColor originalColor = teamTurn;
         List<ChessMove> okMoves = new ArrayList<>();
@@ -72,7 +90,7 @@ public class ChessGame {
         ChessBoard snapshot = copyBoard(board);
         for (ChessMove x : allMoves){
             try {
-                makeMove(x);
+                makeMoveSim(x);
                 if (!isInCheck(occupant.getTeamColor())){
                     okMoves.add(x);
                 }
@@ -218,7 +236,7 @@ public class ChessGame {
                 if (moves == null) continue;
                 for (ChessMove m : moves){
                     try {
-                        makeMove(m);
+                        makeMoveSim(m);
                     } catch (InvalidMoveException e) {
                         continue;
                     }
@@ -259,7 +277,7 @@ public class ChessGame {
                 if (moves == null) continue;
                 for (ChessMove m : moves){
                     try {
-                        makeMove(m);
+                        makeMoveSim(m);
                     } catch (InvalidMoveException e) {
                         continue;
                     }
