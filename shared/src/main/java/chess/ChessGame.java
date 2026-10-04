@@ -60,6 +60,7 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+        TeamColor originalColor = teamTurn;
         List<ChessMove> okMoves = new ArrayList<>();
         ChessPiece occupant = board.getPiece(startPosition);
         if (occupant == null){
@@ -79,7 +80,9 @@ public class ChessGame {
                 continue;
             }
             board = snapshot;
+            teamTurn = originalColor;
             snapshot = copyBoard(board);
+
         }
         return okMoves;
 
