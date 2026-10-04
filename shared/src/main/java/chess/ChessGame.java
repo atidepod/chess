@@ -113,6 +113,9 @@ public class ChessGame {
         if (occupant == null) {
             throw new InvalidMoveException("Illegal move");
         }
+        if (occupant.getTeamColor() != teamTurn) {
+            throw new InvalidMoveException("Illegal move");
+        }
 
         Collection<ChessMove> rawMoves = occupant.pieceMoves(board, start);
         if (!rawMoves.contains(move)) {
@@ -198,6 +201,8 @@ public class ChessGame {
     }
 
     public boolean isInCheckmate(TeamColor teamColor) {
+        TeamColor originalTurn = teamTurn;
+
         if (!isInCheck(teamColor)){
             return false;
         }
@@ -218,6 +223,7 @@ public class ChessGame {
                         continue;
                     }
                     if (!isInCheck(teamColor)){
+                        teamTurn = originalTurn;
                         setBoard(snapshot);
                         return false;
                     }
@@ -236,6 +242,8 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        TeamColor originalTurn = teamTurn;
+
         if (isInCheck(teamColor)){
             return false;
         }
@@ -257,6 +265,7 @@ public class ChessGame {
                     }
                     if (!isInCheck(teamColor)){
                         setBoard(snapshot);
+                        teamTurn = originalTurn;
                         return false;
 
                     }
