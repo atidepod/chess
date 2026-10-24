@@ -1,4 +1,8 @@
 package service;
 
-public record registerRequest() {
+public record registerRequest(
+        String username,
+        String password,
+        String email
+) {
 }

@@ -1,4 +1,7 @@
 package service;
 
-public record loginResult() {
+public record loginResult(
+        String username,
+        String authToken
+) {
 }
