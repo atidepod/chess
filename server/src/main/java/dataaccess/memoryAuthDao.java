@@ -5,18 +5,18 @@ import model.AuthData;
 import java.util.HashMap;
 
 public class memoryAuthDao implements authdao{
-    private static HashMap<String, AuthData> data;
+    private HashMap<String, AuthData> data;
     public memoryAuthDao(){
         data = new HashMap<>();
     }
 
     @Override
-    public static void createAuth(AuthData auth) throws DataAccessException {
+    public void createAuth(AuthData auth) throws DataAccessException {
         data.put(auth.authToken(), auth);
     }
 
     @Override
-    public static AuthData getAuth(String authToken) throws DataAccessException {
+    public AuthData getAuth(String authToken) throws DataAccessException {
         if (!data.containsKey(authToken)){
             throw new DataAccessException("No Auth Token");
         }
@@ -25,7 +25,7 @@ public class memoryAuthDao implements authdao{
     }
 
     @Override
-    public static void deleteAuth(String authToken) throws DataAccessException {
+    public void deleteAuth(String authToken) throws DataAccessException {
         if (!data.containsKey(authToken)){
             throw new DataAccessException("No Auth Token");
         }

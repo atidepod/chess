@@ -1,21 +1,22 @@
 package service;
 
 import dataaccess.DataAccessException;
-import dataaccess.memoryAuthDao;
-import dataaccess.memoryUserDao;
+
+import dataaccess.authdao;
+import dataaccess.userdao;
 import model.AuthData;
 import model.UserData;
 
 import java.util.UUID;
 
 public class UserService {
-    private final String username;
-    private final String password;
-    private final String email;
-    public UserService(){
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    private final userdao userDAO;
+    private final authdao authDAO;
+
+    public UserService(userdao userDAO, authdao authDAO){
+
+        this.userDAO = userDAO;
+        this.authDAO = authDAO;
     }
 
     public registerResult register(registerRequest request) throws Exception {
@@ -23,15 +24,15 @@ public class UserService {
 
             throw new Exception("Bad request");
         }
-        UserData existing = memoryUserDao.getUser(request.username());
+        UserData existing = userDAO.getUser(request.username());
         if (existing != null){
             throw new DataAccessException("Username already exists");
         }
         UserData user = new UserData(request.username(), request.password(), request.email());
-        memoryUserDao.createUser(user);
+        userDAO.createUser(user);
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
-        memoryAuthDao.createAuth(auth);
+        authDAO.createAuth(auth);
         registerResult result = new registerResult(request.username(), token);
         return result;
 
@@ -40,7 +41,7 @@ public class UserService {
         if (request.username() == null || request.password() == null){
             throw new Exception("empty field");
         }
-        UserData user = memoryUserDao.getUser(request.username());
+        UserData user = userDAO.getUser(request.username());
         if (user == null){
             throw new DataAccessException("Unauthorized");
         }
@@ -49,7 +50,7 @@ public class UserService {
         }
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
-        memoryAuthDao.createAuth(auth);
+        authDAO.createAuth(auth);
         loginResult result = new loginResult(request.username(), token);
         return result;
 
@@ -57,11 +58,12 @@ public class UserService {
 
 
     }
-    void logoutRequest logout(String authToken) throws DataAccessException {
-        if (memoryAuthDao.getAuth(authToken) == null){
+    public void logout(logoutRequest request) throws DataAccessException {
+
+        if (authDAO.getAuth(request.authToken()) == null){
             throw new DataAccessException("Unauthorized");
         }
-        memoryAuthDao.deleteAuth(authToken);
+        authDAO.deleteAuth(request.authToken());
 
     }
 
