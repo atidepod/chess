@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import io.javalin.http.Context;
 
 import javax.naming.AuthenticationException;
+import java.util.Map;
 
 public class UserHandler {
 
@@ -16,12 +17,18 @@ public class UserHandler {
         try {
             registerRequest request = gson.fromJson(ctx.body(), registerRequest.class);
             registerResult result = service.register(request);
-            ctx.result(gson.toJson(result));
+            ctx.status(200).result(gson.toJson(result));
         }
-        catch(AuthenticationException){
-            ctx.status(400).json(java.util.Map.of("message", "Error: bad request"));
-
-
+        catch(AuthenticationException e){
+            if (e.getMessage().equals("Bad request")){
+                ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
+            }
+            if (e.getMessage().equals("already taken")){
+                ctx.status(403).result(gson.toJson(Map.of("message", "Error: already taken")));
+            }
+            else {
+                ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+            }
         }
 
     }
