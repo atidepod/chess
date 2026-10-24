@@ -5,7 +5,7 @@ import model.UserData;
 
 public interface userdao {
 
-    void insertUser(UserData user) throws DataAccessException;
+    void createUser(UserData user) throws DataAccessException;
 
 
 

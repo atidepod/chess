@@ -11,7 +11,7 @@ public class memoryUserDao implements userdao{
     }
 
     @Override
-    public void insertUser(UserData user) throws DataAccessException {
+    public static void createUser(UserData user) throws DataAccessException {
         if (users.containsKey(user.username())){
            throw new DataAccessException("Username taken");
         }
@@ -20,7 +20,7 @@ public class memoryUserDao implements userdao{
     }
 
     @Override
-    public UserData getUser (String username) throws DataAccessException {
+    public static UserData getUser(String username) throws DataAccessException {
         return users.get(username);
     }
 
