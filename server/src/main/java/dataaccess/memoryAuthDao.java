@@ -1,4 +1,4 @@
 package dataaccess;
 
-public class memoryAuthDao {
+public class memoryAuthDao implements {
 }
