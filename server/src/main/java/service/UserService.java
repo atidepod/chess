@@ -7,6 +7,7 @@ import dataaccess.userdao;
 import model.AuthData;
 import model.UserData;
 
+import javax.naming.AuthenticationException;
 import java.util.UUID;
 
 public class UserService {
@@ -19,14 +20,14 @@ public class UserService {
         this.authDAO = authDAO;
     }
 
-    public registerResult register(registerRequest request) throws Exception {
+    public registerResult register(registerRequest request) throws AuthenticationException, DataAccessException {
         if (request.username() == null || request.password() == null || request.email() == null) {
 
-            throw new Exception("Bad request");
+            throw new AuthenticationException("Bad request");
         }
         UserData existing = userDAO.getUser(request.username());
         if (existing != null){
-            throw new DataAccessException("Username already exists");
+            throw new AuthenticationException("Username already exists");
         }
         UserData user = new UserData(request.username(), request.password(), request.email());
         userDAO.createUser(user);
@@ -37,16 +38,16 @@ public class UserService {
         return result;
 
     }
-    public loginResult login(loginRequest request) throws Exception {
-        if (request.username() == null || request.password() == null){
-            throw new Exception("empty field");
+    public loginResult login(loginRequest request) throws AuthenticationException, DataAccessException {
+        if (request.username() == null || request.password() == null || request.username().isBlank() || request.password().isBlank()){
+            throw new AuthenticationException("empty field");
         }
         UserData user = userDAO.getUser(request.username());
         if (user == null){
-            throw new DataAccessException("Unauthorized");
+            throw new AuthenticationException("Unauthorized");
         }
         if (!user.password().equals(request.password())){
-            throw new Exception("Unauthorized");
+            throw new AuthenticationException("Unauthorized");
         }
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
@@ -58,10 +59,10 @@ public class UserService {
 
 
     }
-    public void logout(logoutRequest request) throws DataAccessException {
+    public void logout(logoutRequest request) throws AuthenticationException, DataAccessException {
 
         if (authDAO.getAuth(request.authToken()) == null){
-            throw new DataAccessException("Unauthorized");
+            throw new AuthenticationException("Unauthorized");
         }
         authDAO.deleteAuth(request.authToken());
 
