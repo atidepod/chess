@@ -1,6 +1,7 @@
 package service;
 
 import com.google.gson.Gson;
+import dataaccess.DataAccessException;
 import io.javalin.http.Context;
 
 import javax.naming.AuthenticationException;
@@ -33,6 +34,9 @@ public class UserHandler {
                 ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
             }
         }
+        catch (DataAccessException e){
+            ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+        }
 
     }
     public void login(Context ctx) throws Exception{
@@ -53,14 +57,39 @@ public class UserHandler {
             else if ((e.getMessage().equals("Unauthorized"))){
                 ctx.status(401).result(gson.toJson(Map.of("message", "Error: unauthorized")));
             }
+            else {
+                ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+            }
+        }
+        catch (DataAccessException e){
+            ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
         }
 
     }
     public void logout(Context ctx) throws Exception{
+        Gson gson = new Gson();
+        try {
 
-        String token = ctx.header("Authorization");
-        logoutRequest request = new logoutRequest(token);
-        service.logout(request);
+            String token = ctx.header("Authorization");
+            logoutRequest request = new logoutRequest(token);
+            service.logout(request);
+            ctx.status(200).result("{}");
+
+        }
+        catch(com.google.gson.JsonParseException e){
+            ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
+        }
+        catch(AuthenticationException e){
+            if ((e.getMessage().equals("Unauthorized"))){
+                ctx.status(401).result(gson.toJson(Map.of("message", "Error: unauthorized")));
+            }
+            else {
+                ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+            }
+        }
+        catch (DataAccessException e){
+            ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+        }
     }
 
 
