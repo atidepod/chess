@@ -3,7 +3,7 @@ package dataaccess;
 import model.AuthData;
 
 public interface authdao {
-    void insertAuth(AuthData auth) throws DataAccessException;
+    void createAuth(AuthData auth) throws DataAccessException;
 
     AuthData getAuth(String authToken) throws DataAccessException;
 
