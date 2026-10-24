@@ -1,4 +1,4 @@
 package dataaccess;
 
-public class read {
+public class gamedao {
 }

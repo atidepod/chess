@@ -1,4 +1,4 @@
 package dataaccess;
 
-public class delete {
+public class authdao {
 }
