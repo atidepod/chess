@@ -1,8 +1,12 @@
 package service;
 
 import dataaccess.DataAccessException;
+import dataaccess.memoryAuthDao;
 import dataaccess.memoryUserDao;
+import model.AuthData;
 import model.UserData;
+
+import java.util.UUID;
 
 public class UserService {
     private final String username;
@@ -15,7 +19,7 @@ public class UserService {
     }
 
     public registerResult register(registerRequest request) throws Exception {
-        if (username == null || password == null || email == null) {
+        if (request.username() == null || request.password() == null || request.email() == null) {
 
             throw new Exception("Bad request");
         }
@@ -25,9 +29,24 @@ public class UserService {
         }
         UserData user = new UserData(request.username(), request.password(), request.email());
         memoryUserDao.createUser(user);
+        String token = UUID.randomUUID().toString();
+        AuthData auth = new AuthData(token, request.username());
+        memoryAuthDao.createAuth(auth);
+        registerResult result = new registerResult(request.username(), token);
+        return result;
 
     }
-    public loginResult login(loginRequest request){
+    public loginResult login(loginRequest request) throws Exception {
+        if (request.username() == null || request.password() == null){
+            throw new Exception("empty field");
+        }
+        UserData user = memoryUserDao.getUser(request.username());
+        if (user == null){
+            throw new DataAccessException("User does not exist");
+        }
+        if ()
+
+
 
     }
     void logout(){

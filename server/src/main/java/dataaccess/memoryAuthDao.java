@@ -5,13 +5,13 @@ import model.AuthData;
 import java.util.HashMap;
 
 public class memoryAuthDao implements authdao{
-    private HashMap<String, AuthData> data;
+    private static HashMap<String, AuthData> data;
     public memoryAuthDao(){
         data = new HashMap<>();
     }
 
     @Override
-    public void createAuth(AuthData auth) throws DataAccessException {
+    public static void createAuth(AuthData auth) throws DataAccessException {
         data.put(auth.authToken(), auth);
     }
 
