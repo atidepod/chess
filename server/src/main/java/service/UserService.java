@@ -42,14 +42,26 @@ public class UserService {
         }
         UserData user = memoryUserDao.getUser(request.username());
         if (user == null){
-            throw new DataAccessException("User does not exist");
+            throw new DataAccessException("Unauthorized");
         }
-        if ()
+        if (!user.password().equals(request.password())){
+            throw new Exception("Unauthorized");
+        }
+        String token = UUID.randomUUID().toString();
+        AuthData auth = new AuthData(token, request.username());
+        memoryAuthDao.createAuth(auth);
+        loginResult result = new loginResult(request.username(), token);
+        return result;
+
 
 
 
     }
-    void logout(){
+    void logoutRequest logout(String authToken) throws DataAccessException {
+        if (memoryAuthDao.getAuth(authToken) == null){
+            throw new DataAccessException("Unauthorized");
+        }
+        memoryAuthDao.deleteAuth(authToken);
 
     }
 

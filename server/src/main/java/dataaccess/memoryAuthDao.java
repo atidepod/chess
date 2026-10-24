@@ -16,7 +16,7 @@ public class memoryAuthDao implements authdao{
     }
 
     @Override
-    public AuthData getAuth(String authToken) throws DataAccessException {
+    public static AuthData getAuth(String authToken) throws DataAccessException {
         if (!data.containsKey(authToken)){
             throw new DataAccessException("No Auth Token");
         }
@@ -25,7 +25,7 @@ public class memoryAuthDao implements authdao{
     }
 
     @Override
-    public void deleteAuth(String authToken) throws DataAccessException {
+    public static void deleteAuth(String authToken) throws DataAccessException {
         if (!data.containsKey(authToken)){
             throw new DataAccessException("No Auth Token");
         }
