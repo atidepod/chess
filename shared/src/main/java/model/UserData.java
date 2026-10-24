@@ -23,6 +23,6 @@ public class UserData {
         return email;
     }
     public String toString(){
-        return "UserData Class[" +"Username=" + username + "Password=" + password + "Email=" + email + "]";
+        return "UserData Class[ Username=" + username + "Password=" + password + "Email=" + email + "]";
     }
 }

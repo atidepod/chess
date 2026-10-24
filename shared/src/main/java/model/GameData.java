@@ -34,7 +34,7 @@ public class GameData {
         return game;
     }
     public String toString(){
-        return "Game Data Class[" + 
+        return "Game Data Class[ game id=" + gameID + "white username=" + whiteUsername + "black username=" + blackUsername + "game name=" + gameName + "]";
     }
 
 }
