@@ -3,6 +3,7 @@ package service;
 import dataaccess.DataAccessException;
 
 import dataaccess.authdao;
+import dataaccess.gamedao;
 import dataaccess.userdao;
 import model.AuthData;
 import model.UserData;
@@ -13,11 +14,13 @@ import java.util.UUID;
 public class UserService {
     private final userdao userDAO;
     private final authdao authDAO;
+    private final gamedao gameDAO;
 
-    public UserService(userdao userDAO, authdao authDAO){
+    public UserService(userdao userDAO, authdao authDAO, gamedao gameDAO){
 
         this.userDAO = userDAO;
         this.authDAO = authDAO;
+        this.gameDAO = gameDAO;
     }
 
     public registerResult register(registerRequest request) throws AuthenticationException, DataAccessException {
@@ -65,6 +68,18 @@ public class UserService {
             throw new AuthenticationException("Unauthorized");
         }
         authDAO.deleteAuth(request.authToken());
+
+    }
+
+    public listGameRequest listGame(listGameRequest request) throws AuthenticationException, DataAccessException {
+
+        AuthData userToken = authDAO.getAuth(request.authToken());
+        if (userToken == null || ){
+            throw new AuthenticationException("Unauthorized");
+        }
+
+
+
 
     }
 
