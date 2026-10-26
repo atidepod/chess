@@ -57,6 +57,9 @@ public class memoryGameDao implements gamedao{
 
     @Override
     public void clear() throws DataAccessException {
+        if (games == null){
+            throw new DataAccessException("no games to clear");
+        }
         games.clear();
 
     }

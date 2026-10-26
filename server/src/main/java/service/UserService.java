@@ -47,7 +47,7 @@ public class UserService {
 
     }
     public loginResult login(loginRequest request) throws AuthenticationException, DataAccessException {
-        if (request.username() == null || request.password() == null || request.username().isBlank() || request.password().isBlank()){
+        if (request == null || request.username() == null || request.password() == null || request.username().isBlank() || request.password().isBlank()){
             throw new AuthenticationException("empty field");
         }
 
@@ -69,7 +69,7 @@ public class UserService {
 
     }
     public void logout(logoutRequest request) throws AuthenticationException, DataAccessException {
-        if (request.authToken() == null ||
+        if (request == null || request.authToken() == null ||
                 request.authToken().isBlank()) {
 
             throw new AuthenticationException("Unauthorized");
@@ -81,10 +81,10 @@ public class UserService {
 
     }
 
-    public listGameResult listGame(listGameRequest request) throws AuthenticationException, DataAccessException {
+    public listGameResult listGame(listGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
 
-        if (request.authToken() == null || request.authToken().isBlank()){
-            throw new AuthenticationException("bad request");
+        if (request == null || request.authToken() == null || request.authToken().isBlank()){
+            throw new BadRequestResponse("bad request");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
 
@@ -117,8 +117,8 @@ public class UserService {
     }
 
     public void joinGame(joinGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
-        if (request.authToken() == null || request.authToken().isBlank()){
-            throw new AuthenticationException("bad request");
+        if (request == null || request.authToken() == null || request.authToken().isBlank()){
+            throw new BadRequestResponse("bad request");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
 
@@ -126,6 +126,9 @@ public class UserService {
             throw new AuthenticationException(("Unauthorized"));
         }
         GameData gameToJoin = gameDAO.getGame(request.gameID());
+        if (gameToJoin == null) {
+            throw new BadRequestResponse("bad request");
+        }
 
         ChessGame game = gameToJoin.game();
         String username = auth.username();
@@ -142,8 +145,14 @@ public class UserService {
             gameDAO.updateGame(data);
         }
         else{
-            throw new BadRequestResponse("already taken");
+            throw new DataAccessException("already taken");
         }
+
+    }
+    public void clear() throws DataAccessException {
+        userDAO.clear();
+        authDAO.clear();
+        gameDAO.clear();
 
     }
 

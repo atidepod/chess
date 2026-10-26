@@ -15,10 +15,11 @@ public class Server {
     public Server() {
         userdao userDao = new memoryUserDao();
         authdao authDao = new memoryAuthDao();
+        gamedao gameDAO = new memoryGameDao();
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
 
-        UserService userService = new UserService(userDao, authDao);
+        UserService userService = new UserService(userDao, authDao, gameDAO);
         UserHandler userHandler = new UserHandler(userService);
 
 
@@ -26,6 +27,11 @@ public class Server {
         javalin.post("/user", userHandler::register);
         javalin.post("/session", userHandler::login);
         javalin.delete("/session", userHandler::logout);
+        javalin.delete("/db", userHandler::clear);
+        javalin.get("/game", userHandler::listGame);
+        javalin.post("/game", userHandler::createGame);
+        javalin.put("/game", userHandler::joinGame);
+
 
 
 
