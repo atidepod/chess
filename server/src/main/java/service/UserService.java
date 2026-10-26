@@ -101,6 +101,9 @@ public class UserService {
     }
 
     public createGameResult createGame(createGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
+        if (request == null) {
+            throw new BadRequestResponse("bad request");
+        }
         if (request.authToken() == null || request.authToken().isBlank()){
             throw new AuthenticationException("Unauthorized");
         }
