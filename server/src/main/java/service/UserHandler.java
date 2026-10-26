@@ -103,9 +103,7 @@ public class UserHandler {
             listGameResult result = service.listGame(request);
             ctx.status(200).result(gson.toJson(result));
         }
-        catch(com.google.gson.JsonParseException e){
-            ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
-        }
+        
         catch(AuthenticationException e){
             if ((e.getMessage().equals("Unauthorized"))){
                 ctx.status(401).result(gson.toJson(Map.of("message", "Error: unauthorized")));
@@ -116,7 +114,7 @@ public class UserHandler {
         }
         catch(BadRequestResponse e){
             if(e.getMessage().equals("bad request")){
-                ctx.status(400).result(gson.toJson("message", "Error: bad request")));
+                ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
             }
         }
 
