@@ -49,6 +49,9 @@ public class memoryGameDao implements gamedao{
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
+        if (games.values() == null){
+            throw new DataAccessException("No Such Game");
+        }
         return games.values();
     }
 

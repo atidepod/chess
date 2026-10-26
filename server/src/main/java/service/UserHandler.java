@@ -103,7 +103,7 @@ public class UserHandler {
             listGameResult result = service.listGame(request);
             ctx.status(200).result(gson.toJson(result));
         }
-        
+
         catch(AuthenticationException e){
             if ((e.getMessage().equals("Unauthorized"))){
                 ctx.status(401).result(gson.toJson(Map.of("message", "Error: unauthorized")));
@@ -112,15 +112,22 @@ public class UserHandler {
                 ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
             }
         }
-        catch(BadRequestResponse e){
-            if(e.getMessage().equals("bad request")){
-                ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
+        catch(DataAccessException e){
+            if(e.getMessage().equals("No Such Game")){
+                ctx.status(400).result(gson.toJson(Map.of("message", "Error: no such game")));
             }
         }
 
     }
 
     public void createGame(Context ctx){
+        Gson gson = new Gson();
+        try {
+            String token = ctx.header("Authorization");
+            createGameRequest request = gson.fromJson(ctx.body(), createGameRequest.class);
+            
+
+        }
 
     }
     public void joinGame(Context ctx){
