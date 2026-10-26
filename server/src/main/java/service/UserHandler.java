@@ -3,8 +3,10 @@ package service;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import io.javalin.http.Context;
+import model.GameData;
 
 import javax.naming.AuthenticationException;
+import java.util.Collection;
 import java.util.Map;
 
 public class UserHandler {
@@ -91,6 +93,26 @@ public class UserHandler {
             ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
         }
     }
+
+    public void listGame(Context ctx){
+        Gson gson = new Gson();
+        try{
+            String token = ctx.header("Authorization");
+            listGameRequest request = new listGameRequest(token);
+            listGameResult result = service.listGame(request);
+            ctx.status(200).result(gson.toJson(result));
+        }
+        catch()
+
+    }
+
+    public void createGame(Context ctx){
+
+    }
+    public void joinGame(Context ctx){
+
+    }
+
 
 
 }

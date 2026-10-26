@@ -1,10 +1,10 @@
 package service;
 
-public record listGameResult(
+import model.GameData;
 
-        Integer gameID,
-        String whiteUsername,
-        String blackUsername,
-        String gameName
+import java.util.Collection;
+
+public record listGameResult(
+        Collection<GameData> games
 ) {
 }

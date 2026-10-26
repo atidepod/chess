@@ -8,6 +8,8 @@ public interface gamedao {
 
     void createGame(GameData game) throws DataAccessException;
 
+    int getNextGameID();
+
     GameData getGame(int gameID) throws DataAccessException;
 
     void updateGame(GameData game) throws DataAccessException;

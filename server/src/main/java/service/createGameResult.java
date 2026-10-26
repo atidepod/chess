@@ -1,6 +1,6 @@
 package service;
 
 public record createGameResult(
-        Integer gameID
+        int gameID
 ) {
 }
