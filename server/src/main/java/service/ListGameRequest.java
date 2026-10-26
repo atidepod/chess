@@ -1,6 +1,6 @@
 package service;
 
-public record logoutRequest(
+public record ListGameRequest(
         String authToken
 ) {
 }

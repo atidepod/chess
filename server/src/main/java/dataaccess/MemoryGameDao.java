@@ -4,12 +4,11 @@ import model.GameData;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
-public class memoryGameDao implements gamedao{
+public class MemoryGameDao implements GameDao {
     private HashMap<Integer, GameData> games;
     private int nextGameID;
-    public memoryGameDao(){
+    public MemoryGameDao(){
         games = new HashMap<>();
         nextGameID = 1;
     }

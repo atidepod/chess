@@ -4,7 +4,7 @@ import model.GameData;
 
 import java.util.Collection;
 
-public record listGameResult(
+public record ListGameResult(
         Collection<GameData> games
 ) {
 }

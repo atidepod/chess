@@ -1,6 +1,6 @@
 package service;
 
-public record joinGameRequest(
+public record JoinGameRequest(
         String authToken,
         String playerColor,
         int gameID

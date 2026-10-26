@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import model.GameData;
 
 import javax.naming.AuthenticationException;
-import java.util.Collection;
 import java.util.Map;
 
 public class UserHandler {
@@ -19,8 +17,8 @@ public class UserHandler {
     public void register(Context ctx) throws Exception {
         Gson gson = new Gson();
         try {
-            registerRequest request = gson.fromJson(ctx.body(), registerRequest.class);
-            registerResult result = service.register(request);
+            RegisterRequest request = gson.fromJson(ctx.body(), RegisterRequest.class);
+            RegisterResult result = service.register(request);
             ctx.status(200).result(gson.toJson(result));
         }
         catch(com.google.gson.JsonParseException e){
@@ -46,8 +44,8 @@ public class UserHandler {
 
         Gson gson = new Gson();
         try {
-            loginRequest request = gson.fromJson(ctx.body(), loginRequest.class);
-            loginResult result = service.login(request);
+            LoginRequest request = gson.fromJson(ctx.body(), LoginRequest.class);
+            LoginResult result = service.login(request);
             ctx.status(200).result(gson.toJson(result));
         }
 
@@ -72,7 +70,7 @@ public class UserHandler {
         try {
 
             String token = ctx.header("Authorization");
-            logoutRequest request = new logoutRequest(token);
+            LogoutRequest request = new LogoutRequest(token);
             service.logout(request);
             ctx.status(200).result("{}");
 
@@ -99,8 +97,8 @@ public class UserHandler {
         Gson gson = new Gson();
         try{
             String token = ctx.header("Authorization");
-            listGameRequest request = new listGameRequest(token);
-            listGameResult result = service.listGame(request);
+            ListGameRequest request = new ListGameRequest(token);
+            ListGameResult result = service.listGame(request);
             ctx.status(200).result(gson.toJson(result));
         }
 
@@ -128,13 +126,13 @@ public class UserHandler {
         Gson gson = new Gson();
         try {
             String token = ctx.header("Authorization");
-            createGameRequest body = gson.fromJson(ctx.body(), createGameRequest.class);
+            CreateGameRequest body = gson.fromJson(ctx.body(), CreateGameRequest.class);
             if (body == null) {
                 throw new BadRequestResponse("bad request");
             }
 
-            createGameRequest request = new createGameRequest(token, body.gameName());
-            createGameResult result = service.createGame(request);
+            CreateGameRequest request = new CreateGameRequest(token, body.gameName());
+            CreateGameResult result = service.createGame(request);
             ctx.status(200).result(gson.toJson(result));
 
 
@@ -169,8 +167,8 @@ public class UserHandler {
         Gson gson = new Gson();
         try{
             String token = ctx.header("Authorization");
-            joinGameRequest body = gson.fromJson(ctx.body(), joinGameRequest.class);
-            joinGameRequest request = new joinGameRequest(token, body.playerColor(), body.gameID());
+            JoinGameRequest body = gson.fromJson(ctx.body(), JoinGameRequest.class);
+            JoinGameRequest request = new JoinGameRequest(token, body.playerColor(), body.gameID());
             service.joinGame(request);
             ctx.status(200).result("{}");
         }

@@ -3,9 +3,9 @@ package service;
 import chess.ChessGame;
 import dataaccess.DataAccessException;
 
-import dataaccess.authdao;
-import dataaccess.gamedao;
-import dataaccess.userdao;
+import dataaccess.AuthDao;
+import dataaccess.GameDao;
+import dataaccess.UserDao;
 import io.javalin.http.BadRequestResponse;
 import model.AuthData;
 import model.GameData;
@@ -16,11 +16,11 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class UserService {
-    private final userdao userDAO;
-    private final authdao authDAO;
-    private final gamedao gameDAO;
+    private final UserDao userDAO;
+    private final AuthDao authDAO;
+    private final GameDao gameDAO;
 
-    public UserService(userdao userDAO, authdao authDAO, gamedao gameDAO){
+    public UserService(UserDao userDAO, AuthDao authDAO, GameDao gameDAO){
 
         this.userDAO = userDAO;
         this.authDAO = authDAO;
@@ -28,7 +28,7 @@ public class UserService {
     }
 
 
-    public registerResult register(registerRequest request) throws AuthenticationException, DataAccessException {
+    public RegisterResult register(RegisterRequest request) throws AuthenticationException, DataAccessException {
         if (request.username() == null || request.password() == null || request.email() == null || request.username().isBlank() || request.password().isBlank() || request.email().isBlank()) {
 
             throw new AuthenticationException("Bad request");
@@ -42,11 +42,11 @@ public class UserService {
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
         authDAO.createAuth(auth);
-        registerResult result = new registerResult(request.username(), token);
+        RegisterResult result = new RegisterResult(request.username(), token);
         return result;
 
     }
-    public loginResult login(loginRequest request) throws AuthenticationException, DataAccessException {
+    public LoginResult login(LoginRequest request) throws AuthenticationException, DataAccessException {
         if (request == null || request.username() == null || request.password() == null || request.username().isBlank() || request.password().isBlank()){
             throw new AuthenticationException("empty field");
         }
@@ -61,14 +61,14 @@ public class UserService {
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
         authDAO.createAuth(auth);
-        loginResult result = new loginResult(request.username(), token);
+        LoginResult result = new LoginResult(request.username(), token);
         return result;
 
 
 
 
     }
-    public void logout(logoutRequest request) throws AuthenticationException, DataAccessException {
+    public void logout(LogoutRequest request) throws AuthenticationException, DataAccessException {
         if (request == null) {
             throw new BadRequestResponse("bad request");
         }
@@ -83,7 +83,7 @@ public class UserService {
 
     }
 
-    public listGameResult listGame(listGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
+    public ListGameResult listGame(ListGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
 
         if (request == null){
             throw new BadRequestResponse("bad request");
@@ -97,10 +97,10 @@ public class UserService {
             throw new AuthenticationException(("Unauthorized"));
         }
         Collection<GameData> games = gameDAO.listGames();
-        return new listGameResult(games);
+        return new ListGameResult(games);
     }
 
-    public createGameResult createGame(createGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
+    public CreateGameResult createGame(CreateGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
         if (request == null) {
             throw new BadRequestResponse("bad request");
         }
@@ -120,11 +120,11 @@ public class UserService {
         GameData data = new GameData(newGameID, null, null, request.gameName(), game);
 
         gameDAO.createGame(data);
-        return new createGameResult(newGameID);
+        return new CreateGameResult(newGameID);
 
     }
 
-    public void joinGame(joinGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
+    public void joinGame(JoinGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
         if (request == null) {
             throw new BadRequestResponse("bad request");
         }

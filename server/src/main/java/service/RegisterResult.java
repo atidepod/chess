@@ -1,6 +1,6 @@
 package service;
 
-public record registerResult(
+public record RegisterResult(
         String username,
         String authToken
 ) {

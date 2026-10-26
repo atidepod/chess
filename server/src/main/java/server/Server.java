@@ -2,7 +2,6 @@ package server;
 
 import dataaccess.*;
 import io.javalin.*;
-import model.UserData;
 import service.UserHandler;
 import service.UserService;
 
@@ -13,13 +12,13 @@ public class Server {
 
 
     public Server() {
-        userdao userDao = new memoryUserDao();
-        authdao authDao = new memoryAuthDao();
-        gamedao gameDAO = new memoryGameDao();
+        UserDao userDAO = new MemoryUserDao();
+        AuthDao authDAO = new MemoryAuthDao();
+        GameDao gameDAO = new MemoryGameDao();
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
 
-        UserService userService = new UserService(userDao, authDao, gameDAO);
+        UserService userService = new UserService(userDAO, authDAO, gameDAO);
         UserHandler userHandler = new UserHandler(userService);
 
 
