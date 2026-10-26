@@ -232,14 +232,30 @@ class UserHandlerTest {
                 case "equals" -> proxyObject == args[0];
                 default -> {
                     Class<?> returnType = method.getReturnType();
-                    if (returnType == boolean.class) yield false;
-                    if (returnType == int.class) yield 0;
-                    if (returnType == long.class) yield 0L;
-                    if (returnType == double.class) yield 0.0;
-                    if (returnType == float.class) yield 0.0f;
-                    if (returnType == short.class) yield (short) 0;
-                    if (returnType == byte.class) yield (byte) 0;
-                    if (returnType == char.class) yield '\0';
+                    if (returnType == boolean.class){
+                        yield false;
+                    }
+                    if (returnType == int.class){
+                        yield 0;
+                    }
+                    if (returnType == long.class){
+                        yield 0L;
+                    }
+                    if (returnType == double.class){
+                        yield 0.0;
+                    }
+                    if (returnType == float.class){
+                        yield 0.0f;
+                    }
+                    if (returnType == short.class){
+                        yield (short) 0;
+                    }
+                    if (returnType == byte.class){
+                        yield (byte) 0;
+                    }
+                    if (returnType == char.class) {
+                        yield '\0';
+                    }
                     yield null;
                 }
             };

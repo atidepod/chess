@@ -57,7 +57,9 @@ public class ChessPiece {
         for (int[] d : directions){
             int newRow = row +d[0];
             int newCol = col +d[1];
-            if (newRow <1 || newRow >8 || newCol <1 || newCol >8) continue;
+            if (newRow <1 || newRow >8 || newCol <1 || newCol >8){
+                continue;
+            }
             ChessPosition newPos = new ChessPosition(newRow, newCol);
             ChessPiece occupant = board.getPiece(newPos);
             if (occupant == null) {
@@ -375,7 +377,9 @@ public class ChessPiece {
         for (int[] k : knightOff){
             int newRow = row+k[0];
             int newCol = col+k[1];
-            if (newRow < 1 || newRow > 8 || newCol < 1 || newCol > 8) continue;
+            if (newRow < 1 || newRow > 8 || newCol < 1 || newCol > 8){
+                continue;
+            }
             ChessPosition newPos = new ChessPosition(newRow, newCol);
             ChessPiece occupant = board.getPiece(newPos);
             if (occupant == null) {
@@ -435,7 +439,9 @@ public class ChessPiece {
         for (int[] d : offSets){
             int newRow = row+d[0];
             int newCol = col+d[1];
-            if (newRow <1 || newRow >8 || newCol <1 || newCol >8) continue;
+            if (newRow <1 || newRow >8 || newCol <1 || newCol >8){
+                continue;
+            }
             ChessPosition dPos = new ChessPosition(newRow, newCol);
             ChessPiece occupant = board.getPiece(dPos);
 

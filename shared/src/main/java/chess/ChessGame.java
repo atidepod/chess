@@ -64,10 +64,14 @@ public class ChessGame {
         ChessPosition end = move.getEndPosition();
         ChessPiece piece = board.getPiece(start);
 
-        if (piece == null) throw new InvalidMoveException("No piece");
+        if (piece == null){
+            throw new InvalidMoveException("No piece");
+        }
 
         Collection<ChessMove> rawMoves = piece.pieceMoves(board, start);
-        if (!rawMoves.contains(move)) throw new InvalidMoveException("Illegal move");
+        if (!rawMoves.contains(move)){
+            throw new InvalidMoveException("Illegal move");
+        }
 
         board.addPiece(start, null);
         board.addPiece(end, piece);
@@ -108,7 +112,9 @@ public class ChessGame {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
         ChessGame chessGame = (ChessGame) o;
         return Objects.equals(board, chessGame.board) && teamTurn == chessGame.teamTurn;
     }
@@ -181,10 +187,16 @@ public class ChessGame {
             for (int col=1;col<=8;col++){
                 ChessPosition circle = new ChessPosition(row,col);
                 ChessPiece enemy = board.getPiece(circle);
-                if (enemy == null) continue;
-                if (enemy.getTeamColor() == teamColor) continue;
+                if (enemy == null){
+                    continue;
+                }
+                if (enemy.getTeamColor() == teamColor){
+                    continue;
+                }
                 Collection<ChessMove> moves = enemy.pieceMoves(board, circle);
-                if (moves == null) continue;
+                if (moves == null){
+                    continue;
+                }
 
                 for (ChessMove m : moves){
                     if(m.getEndPosition().equals(kingPosition)){
@@ -230,10 +242,16 @@ public class ChessGame {
             for (int col=1;col<=8;col++){
                 ChessPosition circle = new ChessPosition(row,col);
                 ChessPiece friend = board.getPiece(circle);
-                if (friend == null) continue;
-                if (friend.getTeamColor() != teamColor) continue;
+                if (friend == null){
+                    continue;
+                }
+                if (friend.getTeamColor() != teamColor){
+                    continue;
+                }
                 Collection<ChessMove> moves = validMoves(circle);
-                if (moves == null) continue;
+                if (moves == null){
+                    continue;
+                }
                 for (ChessMove m : moves){
                     try {
                         makeMoveSim(m);
@@ -271,10 +289,16 @@ public class ChessGame {
             for (int col=1;col<=8;col++){
                 ChessPosition circle = new ChessPosition(row,col);
                 ChessPiece friend = board.getPiece(circle);
-                if (friend == null) continue;
-                if (friend.getTeamColor() != teamColor) continue;
+                if (friend == null){
+                    continue;
+                }
+                if (friend.getTeamColor() != teamColor){
+                    continue;
+                }
                 Collection<ChessMove> moves = validMoves(circle);
-                if (moves == null) continue;
+                if (moves == null){
+                    continue;
+                }
                 for (ChessMove m : moves){
                     try {
                         makeMoveSim(m);
