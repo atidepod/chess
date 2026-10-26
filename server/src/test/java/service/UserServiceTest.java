@@ -1,6 +1,5 @@
 package service;
 
-import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.MemoryAuthDao;
 import dataaccess.MemoryGameDao;
@@ -23,11 +22,7 @@ class UserServiceTest {
     private MemoryAuthDao auths;
     private MemoryGameDao games;
     private UserService service;
-    private UserHandler handler;
-    private MemoryUserDao users;
-    private MemoryAuthDao auths;
-    private MemoryGameDao games;
-    private final Gson gson = new Gson();
+
 
     @BeforeEach
     void setUp() {
@@ -35,7 +30,6 @@ class UserServiceTest {
         auths = new MemoryAuthDao();
         games = new MemoryGameDao();
         service = new UserService(users, auths, games);
-        handler = new UserHandler(new UserService(users, auths, games));
     }
 
     @Test
