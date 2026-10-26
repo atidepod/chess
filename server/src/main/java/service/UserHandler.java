@@ -2,6 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
+import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import model.GameData;
 
@@ -102,7 +103,22 @@ public class UserHandler {
             listGameResult result = service.listGame(request);
             ctx.status(200).result(gson.toJson(result));
         }
-        catch()
+        catch(com.google.gson.JsonParseException e){
+            ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
+        }
+        catch(AuthenticationException e){
+            if ((e.getMessage().equals("Unauthorized"))){
+                ctx.status(401).result(gson.toJson(Map.of("message", "Error: unauthorized")));
+            }
+            else {
+                ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
+            }
+        }
+        catch(BadRequestResponse e){
+            if(e.getMessage().equals("bad request")){
+                ctx.status(400).result(gson.toJson("message", "Error: bad request")));
+            }
+        }
 
     }
 

@@ -97,7 +97,7 @@ public class UserService {
 
     public createGameResult createGame(createGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
         if (request.authToken() == null || request.authToken().isBlank()){
-            throw new AuthenticationException("bad request");
+            throw new BadRequestResponse("bad request");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
 
