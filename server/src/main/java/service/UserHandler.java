@@ -89,6 +89,10 @@ public class UserHandler {
         catch (DataAccessException e){
             ctx.status(500).result(gson.toJson(Map.of("message", "Error: something broke")));
         }
+        catch (BadRequestResponse e){
+            ctx.status(400).result(gson.toJson(Map.of("message", "Error: bad request")));
+
+        }
     }
 
     public void listGame(Context ctx){

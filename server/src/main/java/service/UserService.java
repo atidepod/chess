@@ -69,8 +69,10 @@ public class UserService {
 
     }
     public void logout(logoutRequest request) throws AuthenticationException, DataAccessException {
-        if (request == null || request.authToken() == null ||
-                request.authToken().isBlank()) {
+        if (request == null) {
+            throw new BadRequestResponse("bad request");
+        }
+        if (request.authToken() == null || request.authToken().isBlank()) {
 
             throw new AuthenticationException("Unauthorized");
         }
@@ -83,8 +85,11 @@ public class UserService {
 
     public listGameResult listGame(listGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
 
-        if (request == null || request.authToken() == null || request.authToken().isBlank()){
+        if (request == null){
             throw new BadRequestResponse("bad request");
+        }
+        if (request.authToken() == null || request.authToken().isBlank()){
+            throw new AuthenticationException("Unauthorized");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
 
@@ -97,7 +102,7 @@ public class UserService {
 
     public createGameResult createGame(createGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
         if (request.authToken() == null || request.authToken().isBlank()){
-            throw new BadRequestResponse("bad request");
+            throw new AuthenticationException("Unauthorized");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
 
@@ -117,7 +122,21 @@ public class UserService {
     }
 
     public void joinGame(joinGameRequest request) throws AuthenticationException, DataAccessException, BadRequestResponse{
-        if (request == null || request.authToken() == null || request.authToken().isBlank()){
+        if (request == null) {
+            throw new BadRequestResponse("bad request");
+        }
+        if (request.authToken() == null || request.authToken().isBlank()){
+            throw new AuthenticationException("Unauthorized");
+        }
+
+        if (request.playerColor() == null || (!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK"))) {
+            throw new BadRequestResponse("bad request");
+        }
+
+        if (request.gameID() <= 0) {
+            throw new BadRequestResponse("bad request");
+        }
+        if(!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK")){
             throw new BadRequestResponse("bad request");
         }
         AuthData auth = authDAO.getAuth(request.authToken());
@@ -132,9 +151,7 @@ public class UserService {
 
         ChessGame game = gameToJoin.game();
         String username = auth.username();
-        if(!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK")){
-            throw new BadRequestResponse("bad request");
-        }
+
 
         if (request.playerColor().equals("WHITE") && gameToJoin.whiteUsername() == null){
             GameData data = new GameData(request.gameID(), username, gameToJoin.blackUsername(), gameToJoin.gameName(), game);
