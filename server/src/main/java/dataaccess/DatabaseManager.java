@@ -2,7 +2,14 @@ package dataaccess;
 
 import java.sql.*;
 import java.util.Properties;
-import org.mindrot.jbcrypt.BCrypt;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
 public class DatabaseManager {
     private static String databaseName;
     private static String dbUsername;
