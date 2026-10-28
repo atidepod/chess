@@ -23,7 +23,7 @@ public class DataAccessInit {
             CREATE TABLE IF NOT
                     EXISTS auth (
                                 authToken VARCHAR(255) NOT NULL,
-                username VARCHAR(255) NOT
+                                username VARCHAR(255) NOT NULL,
                                 PRIMARY KEY (authToken)
             )
             """;
@@ -31,15 +31,12 @@ public class DataAccessInit {
             var games = """
             CREATE
                     TABLE IF NOT EXISTS games (
-                gameID INT NOT NULL AUTO_INC
-                               whiteUsername VARCHA
-                               blackUsername VARCHAR(25
-                           gameName VARCHAR(255) NOT
-                    NULL,
-                game
-                                TEX
-
-                  PRIMARY KEY (gameID)
+                        gameID INT NOT NULL AUTO_INCREMENT,
+                        whiteUsername VARCHAR(255),
+                        blackUsername VARCHAR(255),
+                        gameName VARCHAR(255) NOT NULL,
+                        game TEXT NOT NULL,
+                        PRIMARY KEY (gameID)
             )
              """;
             try (var statement = conn.createStatement()){
