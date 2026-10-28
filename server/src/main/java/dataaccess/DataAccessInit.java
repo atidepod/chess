@@ -1,12 +1,13 @@
 package dataaccess;
 
 
+import java.sql.SQLException;
+
 public class DataAccessInit {
-    public DatabaseManager manager;
 
 
-    public static void initDB (){
-        try (var conn = manager.getConnection()) {
+    public static void initDB () throws DataAccessException{
+        try (var conn = DatabaseManager.getConnection()) {
             var users = """
             
                     CREATE TABLE IF NOT EXISTS users (
@@ -47,9 +48,14 @@ public class DataAccessInit {
                         auth);
                 statement.executeUpdate(games);
             }
-            
 
 
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        catch(DataAccessException e){
+            throw new DataAccessException(e.getMessage());
         }
 
     }
