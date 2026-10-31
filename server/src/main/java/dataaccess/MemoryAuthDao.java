@@ -4,6 +4,7 @@ import model.AuthData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -15,16 +16,38 @@ public class MemoryAuthDao implements AuthDao {
 
     @Override
     public void createAuth(AuthData auth) throws DataAccessException {
-        data.put(auth.authToken(), auth);
+        String sql = """
+               INSERT INTO auth
+               (authtoken, username)
+               VALUES (?, ?)
+               """;
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, auth.authToken());
+            stmt.setString(2, auth.username());
+            stmt.executeUpdate();
+
+        } catch (SQLException e){
+            throw new DataAccessException("Unable to create auth", e);
+        }
     }
 
     @Override
     public AuthData getAuth(String authToken) {
-        if (!data.containsKey(authToken)){
-            return null;
+        String sql = """
+                SELECT authTokem, username
+                FROM auth
+                WHERE authToken = ?
+                """;
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, authToken);
+            try (ResultSet rs = stmt.executeQuery()){
+                if (rs.next()){
+                    return rs.getString("authToken");
+                }
+            }
         }
-
-        return data.get(authToken);
     }
 
     @Override
