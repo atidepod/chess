@@ -2,6 +2,9 @@ package dataaccess;
 
 import model.AuthData;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class MemoryAuthDao implements AuthDao {
@@ -34,9 +37,15 @@ public class MemoryAuthDao implements AuthDao {
 
     @Override
     public void clear() throws DataAccessException {
-        if (data == null){
-            throw new DataAccessException("no data to clear");
+        String sql = "DELETE FROM auth";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Unable to clear auth", e);
         }
-        data.clear();
     }
 }

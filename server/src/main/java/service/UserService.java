@@ -14,7 +14,7 @@ import model.UserData;
 import javax.naming.AuthenticationException;
 import java.util.Collection;
 import java.util.UUID;
-
+import org.mindrot.jbcrypt.BCrypt;
 public class UserService {
     private final UserDao userDAO;
     private final AuthDao authDAO;
@@ -37,7 +37,8 @@ public class UserService {
         if (existing != null){
             throw new AuthenticationException("Username already exists");
         }
-        UserData user = new UserData(request.username(), request.password(), request.email());
+        String hashedPassword = BCrypt.hashpw(request.password(), BCrypt.gensalt());
+        UserData user = new UserData(request.username(), hashedPassword, request.email());
         userDAO.createUser(user);
         String token = UUID.randomUUID().toString();
         AuthData auth = new AuthData(token, request.username());
@@ -55,7 +56,7 @@ public class UserService {
         if (user == null){
             throw new AuthenticationException("Unauthorized");
         }
-        if (!user.password().equals(request.password())){
+        if (!BCrypt.checkpw(request.password(), user.password())) {
             throw new AuthenticationException("Unauthorized");
         }
         String token = UUID.randomUUID().toString();
@@ -170,9 +171,9 @@ public class UserService {
 
     }
     public void clear() throws DataAccessException {
-        userDAO.clear();
         authDAO.clear();
         gameDAO.clear();
+        userDAO.clear();
 
     }
 

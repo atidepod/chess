@@ -2,6 +2,9 @@ package dataaccess;
 
 import model.GameData;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -56,10 +59,15 @@ public class MemoryGameDao implements GameDao {
 
     @Override
     public void clear() throws DataAccessException {
-        if (games == null){
-            throw new DataAccessException("no games to clear");
-        }
-        games.clear();
+        String sql = "DELETE FROM games";
 
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Unable to clear games", e);
+        }
     }
 }

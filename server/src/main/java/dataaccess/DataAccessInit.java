@@ -1,7 +1,9 @@
 package dataaccess;
 
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DataAccessInit {
 
@@ -24,7 +26,8 @@ public class DataAccessInit {
                     EXISTS auth (
                                 authToken VARCHAR(255) NOT NULL,
                                 username VARCHAR(255) NOT NULL,
-                                PRIMARY KEY (authToken)
+                                PRIMARY KEY (authToken),
+                                FOREIGN KEY (username) REFERENCES users(username)
             )
             """;
 
@@ -36,7 +39,10 @@ public class DataAccessInit {
                         blackUsername VARCHAR(255),
                         gameName VARCHAR(255) NOT NULL,
                         game TEXT NOT NULL,
-                        PRIMARY KEY (gameID)
+                        PRIMARY KEY (gameID),
+                        FORIEGN KEY (whiteUsername) REFERENCES users(username),
+                        FOREIGN KEY (blackUsername) REFERENCES users(username)
+                
             )
              """;
             try (var statement = conn.createStatement()){
@@ -55,6 +61,18 @@ public class DataAccessInit {
             throw new DataAccessException(e.getMessage());
         }
 
+    }
+    public void clear() throws DataAccessException {
+        try (Connection conn = DatabaseManager.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            stmt.executeUpdate("DELETE FROM auth");
+            stmt.executeUpdate("DELETE FROM games");
+            stmt.executeUpdate("DELETE FROM users");
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Unable to clear database");
+        }
     }
 
 }
