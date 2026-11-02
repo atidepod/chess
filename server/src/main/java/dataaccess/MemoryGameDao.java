@@ -23,10 +23,12 @@ public class MemoryGameDao implements GameDao {
 
     @Override
     public void createGame(GameData game) throws DataAccessException {
-        if (games.containsKey(game.gameID())){
-            throw new DataAccessException("Game Already Made");
-        }
-        games.put(game.gameID(), game);
+        String sql = """
+                INSERT INTO games
+                (whiteUsername, blackUsername, gameName, game)
+                VALUES (?, ?, ?, ?)
+                """;
+        try (Connection conn = DatabaseManager.getConnection())
 
     }
 

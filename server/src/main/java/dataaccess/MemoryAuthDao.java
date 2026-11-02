@@ -33,31 +33,53 @@ public class MemoryAuthDao implements AuthDao {
     }
 
     @Override
-    public AuthData getAuth(String authToken) {
+    public AuthData getAuth(AuthData auth) throws DataAccessException {
         String sql = """
-                SELECT authTokem, username
-                FROM auth
-                WHERE authToken = ?
-                """;
+            SELECT authToken, username
+            FROM auth
+            WHERE authToken = ?
+        """;
+
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, authToken);
-            try (ResultSet rs = stmt.executeQuery()){
-                if (rs.next()){
-                    return rs.getString("authToken");
+
+            stmt.setString(1, auth.authToken());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                    return new AuthData(
+                            rs.getString("authToken"),
+                            rs.getString("username")
+                    );
                 }
             }
+            return null;
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Unable to get auth", e);
         }
     }
 
     @Override
-    public void deleteAuth(String authToken) throws DataAccessException {
-        if (!data.containsKey(authToken)){
-            throw new DataAccessException("No Auth Token");
-        }
-        data.remove(authToken);
-    }
+    public void deleteAuth(AuthData auth) throws DataAccessException {
 
+        String sql = """
+            DELETE FROM auth
+            WHERE authToken = ?
+        """;
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, auth.authToken());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Unable to delete auth", e);
+        }
+    }
     @Override
     public void clear() throws DataAccessException {
         String sql = "DELETE FROM auth";
