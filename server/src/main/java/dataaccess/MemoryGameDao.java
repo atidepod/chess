@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import com.google.gson.Gson;
@@ -93,7 +94,22 @@ public class MemoryGameDao implements GameDao {
                WHERE gameID = ?
                
                 """;
-        
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, game.whiteUsername());
+            stmt.setString(2, game.blackUsername());
+            stmt.setString(3, game.gameName());
+            stmt.setString(4, gson.toJson(game.game()));
+            stmt.setInt(5, game.gameID());
+            int rows = stmt.executeUpdate();
+
+            if (rows == 0){
+                throw new DataAccessException("No such Game");
+            }
+
+        } catch (SQLException e){
+            throw new DataAccessException("Unable to update game", e);
+        }
 
 
 
@@ -102,14 +118,29 @@ public class MemoryGameDao implements GameDao {
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        if (games.values() == null){
-            throw new DataAccessException("No Such Game");
+        ArrayList.GameData> games = new ArrayList<>();
+        String sql = "SELECT * FROM games";
+
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                games.add(new GameData(rs.getInt("gameID"),
+                        rs.getString("whiteUsername"),
+                        rs.getString("blackUsername"),
+                        rs.getString("gameName"),
+                        gson.fromJson(rs.getString("game"), ChessGame.class)));
+
+            }
+            return games;
         }
-        return games.values();
+
+
     }
 
     @Override
     public void clear() throws DataAccessException {
+
         String sql = "DELETE FROM games";
 
         try (Connection conn = DatabaseManager.getConnection();
