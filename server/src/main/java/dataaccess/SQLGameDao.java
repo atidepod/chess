@@ -138,6 +138,9 @@ public class SQLGameDao implements GameDao {
             }
             return games;
         }
+        catch (SQLException e){
+            throw new DataAccessException("Unable to list games");
+        }
 
 
     }
