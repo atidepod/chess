@@ -74,7 +74,6 @@ public class SQLAuthDao implements AuthDao {
 
             stmt.setString(1, authToken);
 
-            stmt.executeUpdate();
             int rows = stmt.executeUpdate();
 
             if (rows == 0) {
