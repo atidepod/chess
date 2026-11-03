@@ -36,13 +36,13 @@ public class RoyerDatabaseTest {
 
     @Test
     public void createUserPositive() throws Exception{
-        UserData user = new UserData("bob", "password", "bob@test.com");
+        UserData user = new UserData("bib", "password", "bib@test.com");
         users.createUser(user);
-        UserData found = users.getUser("bob");
+        UserData found = users.getUser("bib");
         assertNotNull(found);
-        assertEquals("bob", found.username());
+        assertEquals("bib", found.username());
         assertEquals("password", found.password());
-        assertEquals("bob@test.com", found.email());
+        assertEquals("bib@test.com", found.email());
 
     }
 
@@ -54,7 +54,7 @@ public class RoyerDatabaseTest {
 
     @Test
     public void createAuthPositive() throws Exception{
-        users.createUser(new UserData("bob", "password", "bob@test.com"));
+        users.createUser(new UserData("bb", "password", "bb@test.com"));
 
         AuthData auth = new AuthData("token123", "bob");
         auths.createAuth(auth);
