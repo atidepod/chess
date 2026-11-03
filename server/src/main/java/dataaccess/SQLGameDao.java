@@ -29,12 +29,13 @@ public class SQLGameDao implements GameDao {
                 VALUES (?, ?, ?, ?)
                 """;
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, game.whiteUsername());
             stmt.setString(2, game.blackUsername());
             stmt.setString(3, game.gameName());
             stmt.setString(4, gson.toJson(game.game()));
             stmt.executeUpdate();
+
 
             try (ResultSet rs = stmt.getGeneratedKeys()){
                 if (rs.next()){
