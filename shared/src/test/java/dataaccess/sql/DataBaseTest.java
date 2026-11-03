@@ -13,13 +13,12 @@ import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DataBaseTests {
+public class DataBaseTest {
     private SQLUserDao users;
     private SQLAuthDao auths;
     private SQLGameDao games;
