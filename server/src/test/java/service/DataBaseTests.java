@@ -3,8 +3,8 @@ package service;
 import chess.ChessGame;
 
 
-
-
+import chess.ChessMove;
+import chess.ChessPosition;
 import dataaccess.SQLAuthDao;
 import dataaccess.SQLGameDao;
 import dataaccess.SQLUserDao;
@@ -14,6 +14,8 @@ import model.UserData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,6 +96,50 @@ public class DataBaseTests {
         assertEquals(id, loaded.gameID());
 
     }
-    
+
+    @Test
+    public void getGameNegative() throws Exception{
+        ChessGame game = new ChessGame();
+        int id = games.createGame(new GameData(0, "nope", "none", "test", game));
+        assertNull(id);
+
+
+    }
+    @Test
+    public void updateGamePlayersPositive() throws Exception{
+        int id = games.createGame(new GameData(0, null, null, "game", new ChessGame()));
+        GameData updated = new GameData(id, "whitePlayer", "blackPlayer", new ChessGame());
+        games.updateGame(updated);
+        GameData result = games.getGame(id);
+        assertEquals("whitePlayer", result.whiteUsername());
+        assertEquals("blackPlayer", result.blackUsername());
+
+    }
+    @Test
+    public void gameStatePersistencePositive() throws Exception{
+        ChessGame game = new ChessGame();
+        game.makeMove(new ChessMove(new ChessPosition(2,1), new ChessPosition(4,1), null));
+        int id = games.createGame(new GameData(0, null, null, "game", game));
+        GameData loaded = games.getGame(id);
+        assertEquals(game, loaded.game());
+
+
+    }
+    @Test
+    public void listGamesPositive() throws Exception{
+        games.createGame(new GameData(0, null, null, "game1", new ChessGame()));
+        games.createGame(new GameData(0, null, null, "game2", new ChessGame()));
+        Collection<GameData> gameList = games.listGames();
+        assertNotNull(gameList);
+
+
+    }
+    @Test
+    public void clearGamesPositive() throws Exception{
+        games.createGame(new GameData(0, null, null, "game", new ChessGame()));
+        games.clear();
+        assertNull(games.listGames());
+    }
+
 
 }
