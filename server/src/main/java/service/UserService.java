@@ -139,9 +139,7 @@ public class UserService {
         if (request.gameID() <= 0) {
             throw new BadRequestResponse("bad request");
         }
-        if(!request.playerColor().equals("WHITE") && !request.playerColor().equals("BLACK")){
-            throw new BadRequestResponse("bad request");
-        }
+
         AuthData auth = authDAO.getAuth(request.authToken());
 
         if (auth == null){

@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class MemoryUserDao implements UserDao {
+public class SQLUserDao implements UserDao {
     private HashMap<String, UserData> users;
-    public MemoryUserDao() {
+    public SQLUserDao() {
         users = new HashMap<>();
     }
 

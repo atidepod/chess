@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class MemoryAuthDao implements AuthDao {
+public class SQLAuthDao implements AuthDao {
     private HashMap<String, AuthData> data;
-    public MemoryAuthDao(){
+    public SQLAuthDao(){
         data = new HashMap<>();
     }
 

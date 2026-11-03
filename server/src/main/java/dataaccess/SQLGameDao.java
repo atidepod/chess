@@ -2,7 +2,7 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.GameData;
-
+import chess.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import com.google.gson.Gson;
-public class MemoryGameDao implements GameDao {
+public class SQLGameDao implements GameDao {
     private HashMap<Integer, GameData> games;
     private final Gson gson = new Gson();
     private int nextGameID;
-    public MemoryGameDao(){
+    public SQLGameDao(){
         games = new HashMap<>();
         nextGameID = 1;
     }
@@ -122,7 +122,7 @@ public class MemoryGameDao implements GameDao {
 
     @Override
     public Collection<GameData> listGames() throws DataAccessException {
-        ArrayList.GameData> games = new ArrayList<>();
+        ArrayList<GameData> games = new ArrayList<>();
         String sql = "SELECT * FROM games";
 
         try (Connection conn = DatabaseManager.getConnection();

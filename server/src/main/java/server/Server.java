@@ -12,9 +12,16 @@ public class Server {
 
 
     public Server() {
-        UserDao userDAO = new MemoryUserDao();
-        AuthDao authDAO = new MemoryAuthDao();
-        GameDao gameDAO = new MemoryGameDao();
+        try {
+            DatabaseManager.createDatabase();
+            DataAccessInit.initDB();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        UserDao userDAO = new SQLUserDao();
+        AuthDao authDAO = new SQLAuthDao();
+        GameDao gameDAO = new SQLGameDao();
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
 
@@ -30,8 +37,7 @@ public class Server {
         javalin.get("/game", userHandler::listGame);
         javalin.post("/game", userHandler::createGame);
         javalin.put("/game", userHandler::joinGame);
-        DatabaseManager.createDatabase();
-        DataAccessInit.initDB();
+
 
 
 
