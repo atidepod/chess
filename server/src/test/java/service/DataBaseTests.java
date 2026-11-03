@@ -108,7 +108,7 @@ public class DataBaseTests {
     @Test
     public void updateGamePlayersPositive() throws Exception{
         int id = games.createGame(new GameData(0, null, null, "game", new ChessGame()));
-        GameData updated = new GameData(id, "whitePlayer", "blackPlayer", new ChessGame());
+        GameData updated = new GameData(id, "whitePlayer", "blackPlayer", "game2", new ChessGame());
         games.updateGame(updated);
         GameData result = games.getGame(id);
         assertEquals("whitePlayer", result.whiteUsername());
