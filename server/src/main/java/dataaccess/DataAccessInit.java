@@ -40,7 +40,7 @@ public class DataAccessInit {
                         gameName VARCHAR(255) NOT NULL,
                         game TEXT NOT NULL,
                         PRIMARY KEY (gameID),
-                        FORIEGN KEY (whiteUsername) REFERENCES users(username),
+                        FOREIGN KEY (whiteUsername) REFERENCES users(username),
                         FOREIGN KEY (blackUsername) REFERENCES users(username)
                 
             )
