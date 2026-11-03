@@ -33,7 +33,7 @@ public class MemoryAuthDao implements AuthDao {
     }
 
     @Override
-    public AuthData getAuth(AuthData auth) throws DataAccessException {
+    public AuthData getAuth(String authToken) throws DataAccessException {
         String sql = """
             SELECT authToken, username
             FROM auth
@@ -43,7 +43,7 @@ public class MemoryAuthDao implements AuthDao {
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, auth.authToken());
+            stmt.setString(1, authToken);
 
             try (ResultSet rs = stmt.executeQuery()) {
 
@@ -62,7 +62,7 @@ public class MemoryAuthDao implements AuthDao {
     }
 
     @Override
-    public void deleteAuth(AuthData auth) throws DataAccessException {
+    public void deleteAuth(String authToken) throws DataAccessException {
 
         String sql = """
             DELETE FROM auth
@@ -72,9 +72,14 @@ public class MemoryAuthDao implements AuthDao {
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, auth.authToken());
+            stmt.setString(1, authToken);
 
             stmt.executeUpdate();
+            int rows = stmt.executeUpdate();
+
+            if (rows == 0) {
+                throw new DataAccessException("Auth token not found");
+            }
 
         } catch (SQLException e) {
             throw new DataAccessException("Unable to delete auth", e);

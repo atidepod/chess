@@ -117,11 +117,10 @@ public class UserService {
             throw new BadRequestResponse("bad request");
         }
         ChessGame game = new ChessGame();
-        int newGameID = gameDAO.getNextGameID();
-        GameData data = new GameData(newGameID, null, null, request.gameName(), game);
+        GameData gamer = new GameData(0, null, null, request.gameName(), game);
 
-        gameDAO.createGame(data);
-        return new CreateGameResult(newGameID);
+        int gameID = gameDAO.createGame(gamer);
+        return new CreateGameResult(gameID);
 
     }
 

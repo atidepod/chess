@@ -19,14 +19,10 @@ public class MemoryGameDao implements GameDao {
         games = new HashMap<>();
         nextGameID = 1;
     }
-    @Override
-    public int getNextGameID(){
-        return nextGameID++;
-    }
 
 
     @Override
-    public void createGame(GameData game) throws DataAccessException {
+    public int createGame(GameData game) throws DataAccessException {
         String sql = """
                 INSERT INTO games
                 (whiteUsername, blackUsername, gameName, game)
@@ -39,6 +35,14 @@ public class MemoryGameDao implements GameDao {
             stmt.setString(3, game.gameName());
             stmt.setString(4, gson.toJson(game.game()));
             stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()){
+                if (rs.next()){
+                    return rs.getInt(1);
+
+                }
+            }
+            throw new DataAccessException("No game ID generated");
 
         } catch (SQLException e){
             throw new DataAccessException("Unable to create game");
@@ -75,7 +79,7 @@ public class MemoryGameDao implements GameDao {
                 }
             }
 
-            throw new DataAccessException("No Such Game");
+            return null;
 
         } catch (SQLException e) {
             throw new DataAccessException("Unable to get game", e);
