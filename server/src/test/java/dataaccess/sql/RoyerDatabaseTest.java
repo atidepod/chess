@@ -54,6 +54,8 @@ public class RoyerDatabaseTest {
 
     @Test
     public void createAuthPositive() throws Exception{
+        users.createUser(new UserData("bob", "password", "bob@test.com"));
+
         AuthData auth = new AuthData("token123", "bob");
         auths.createAuth(auth);
         AuthData result = auths.getAuth("token123");
@@ -63,6 +65,8 @@ public class RoyerDatabaseTest {
 
     @Test
     public void deleteAuthPositive() throws Exception{
+        users.createUser(new UserData("bob", "password", "bob@test.com"));
+
         AuthData auth = new AuthData("token123", "bob");
         auths.createAuth(auth);
         auths.deleteAuth("token123");
@@ -98,14 +102,29 @@ public class RoyerDatabaseTest {
 
     @Test
     public void getGameNegative() throws Exception{
-        ChessGame game = new ChessGame();
-        int id = games.createGame(new GameData(0, "nope", "none", "test", game));
-        assertNull(id);
+        GameData game = games.getGame(999999);
+
+        assertNull(game);
 
 
     }
     @Test
     public void updateGamePlayersPositive() throws Exception{
+        users.createUser(
+                new UserData(
+                        "whitePlayer",
+                        "pw",
+                        "white@test.com"
+                )
+        );
+
+        users.createUser(
+                new UserData(
+                        "blackPlayer",
+                        "pw",
+                        "black@test.com"
+                )
+        );
         int id = games.createGame(new GameData(0, null, null, "game", new ChessGame()));
         GameData updated = new GameData(id, "whitePlayer", "blackPlayer", "game2", new ChessGame());
         games.updateGame(updated);
@@ -137,7 +156,7 @@ public class RoyerDatabaseTest {
     public void clearGamesPositive() throws Exception{
         games.createGame(new GameData(0, null, null, "game", new ChessGame()));
         games.clear();
-        assertNull(games.listGames());
+        assertTrue(games.listGames().isEmpty());
     }
 
 
