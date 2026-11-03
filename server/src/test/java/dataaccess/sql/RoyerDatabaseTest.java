@@ -18,7 +18,7 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DataBaseTest {
+public class RoyerDatabaseTest {
     private SQLUserDao users;
     private SQLAuthDao auths;
     private SQLGameDao games;
