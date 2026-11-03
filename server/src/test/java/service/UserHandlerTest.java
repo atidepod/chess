@@ -1,9 +1,9 @@
 package service;
 
 import com.google.gson.Gson;
-import dataaccess.MemoryAuthDao;
-import dataaccess.MemoryGameDao;
-import dataaccess.MemoryUserDao;
+import dataaccess.SQLAuthDao;
+import dataaccess.SQLGameDao;
+import dataaccess.SQLUserDao;
 import io.javalin.http.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,16 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class UserHandlerTest {
     private UserHandler handler;
-    private MemoryUserDao users;
-    private MemoryAuthDao auths;
-    private MemoryGameDao games;
+    private SQLUserDao users;
+    private SQLAuthDao auths;
+    private SQLGameDao games;
     private final Gson gson = new Gson();
 
     @BeforeEach
     void setUp() {
-        users = new MemoryUserDao();
-        auths = new MemoryAuthDao();
-        games = new MemoryGameDao();
+        users = new SQLUserDao();
+        auths = new SQLAuthDao();
+        games = new SQLGameDao();
         handler = new UserHandler(new UserService(users, auths, games));
     }
 

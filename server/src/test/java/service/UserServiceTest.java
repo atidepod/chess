@@ -1,9 +1,8 @@
 package service;
-
 import dataaccess.DataAccessException;
-import dataaccess.MemoryAuthDao;
-import dataaccess.MemoryGameDao;
-import dataaccess.MemoryUserDao;
+import dataaccess.SQLAuthDao;
+import dataaccess.SQLGameDao;
+import dataaccess.SQLUserDao;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -18,17 +17,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 
-    private MemoryUserDao users;
-    private MemoryAuthDao auths;
-    private MemoryGameDao games;
+    private SQLUserDao users;
+    private SQLAuthDao auths;
+    private SQLGameDao games;
     private UserService service;
 
 
     @BeforeEach
     void setUp() {
-        users = new MemoryUserDao();
-        auths = new MemoryAuthDao();
-        games = new MemoryGameDao();
+        users = new SQLUserDao();
+        auths = new SQLAuthDao();
+        games = new SQLGameDao();
         service = new UserService(users, auths, games);
     }
 
