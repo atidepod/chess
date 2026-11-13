@@ -1,6 +1,9 @@
 ### Maven
 target
 
+### Local development tools and database ###
+.local/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/

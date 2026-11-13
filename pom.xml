@@ -14,6 +14,7 @@
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
+        <exec.mainClass>client.ClientMain</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -69,6 +70,15 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+
             <!-- Add the other existing source directories without moving them -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -83,7 +93,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>shared/src</source>
+                                <source>shared/src/main/java</source>
                                 <source>client/src/main/java</source>
                             </sources>
                         </configuration>

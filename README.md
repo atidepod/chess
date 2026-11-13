@@ -26,30 +26,45 @@ Open the project directory in IntelliJ in order to develop, run, and debug your 
 
 ## Maven Support
 
-You can use the following commands to build, test, package, and run your code.
+Run these commands from the project root using Maven and JDK 17 or newer. The root `pom.xml` builds the client, server, and shared source directories together.
 
-| Command                    | Description                                     |
-| -------------------------- | ----------------------------------------------- |
-| `mvn compile`              | Builds the code                                 |
-| `mvn package`              | Run the tests and build an Uber jar file        |
-| `mvn package -DskipTests`  | Build an Uber jar file                          |
-| `mvn install`              | Installs the packages into the local repository |
-| `mvn test`                 | Run all the tests                               |
-| `mvn -pl shared test`      | Run all the shared tests                        |
-| `mvn -pl client exec:java` | Build and run the client `Main`                 |
-| `mvn -pl server exec:java` | Build and run the server `Main`                 |
+| Command | Description |
+| ------- | ----------- |
+| `mvn compile` | Compile the application |
+| `mvn compile exec:java` | Compile and launch `client.ClientMain` |
+| `mvn compile exec:java "-Dexec.mainClass=server.ServerMain"` | Compile and launch the server |
+| `mvn test` | Run the server tests configured in the root POM |
+| `mvn package` | Run the configured tests and build a JAR |
+| `mvn install` | Install the package into the local repository |
 
-These commands are configured by the `pom.xml` (Project Object Model) files. There is a POM file in the root of the project, and one in each of the modules. The root POM defines any global dependencies and references the module POM files.
+## Testing the console UI
 
-## Running the program using Java
+Launch the client with `mvn compile exec:java`. Enter `help` to display the available commands, then `quit` to exit. These commands work without a running server.
 
-Once you have compiled your project into an uber jar, you can execute it with the following command.
+For registration, login, and game commands, first start the server in a separate console. It listens at `http://localhost:8080` and requires MySQL configured through `server/src/main/resources/db.properties`.
 
-```sh
-java -jar client/target/client-jar-with-dependencies.jar
+On Windows, start the workspace's local MySQL instance before running `ServerMain`:
 
-♕ 240 Chess Client: chess.ChessPiece@7852e922
+```powershell
+.\scripts\mysql.ps1
 ```
+
+The first start downloads MySQL Community Server 8.4.9 and initializes it using the existing root credentials in `db.properties`. It runs on the configured local port. Its binaries, data, and private configuration stay in the ignored `.local/mysql` directory and survive `mvn clean`.
+
+Then run the **ServerMain** configuration in IntelliJ, or use `mvn compile exec:java "-Dexec.mainClass=server.ServerMain"`. Open `http://localhost:8080` to check the server. To stop the local database after stopping the chess server:
+
+```powershell
+.\scripts\mysql.ps1 -Action Stop
+```
+
+If Java and Maven are not on your PowerShell path, set `JAVA_HOME` to your JDK directory and invoke Maven using its full path. IntelliJ includes Maven under its installation directory:
+
+```powershell
+$env:JAVA_HOME = "$env:USERPROFILE\.jdks\corretto-23.0.2"
+& 'C:\Program Files\JetBrains\IntelliJ IDEA 2026.2.2\plugins\maven-plugin\lib\maven3\bin\mvn.cmd' compile exec:java
+```
+
+Adjust those installation paths if you use a different JDK or IntelliJ version. IntelliJ uses the root `chess` module for the client, server, and shared code.
 
 
 
