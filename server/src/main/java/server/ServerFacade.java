@@ -10,6 +10,7 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import service.JoinGameRequest;
+import service.RegisterRequest;
 
 public class ServerFacade {
     private final String serverUrl;
@@ -64,6 +65,23 @@ public class ServerFacade {
     }
 
     public AuthData register(String email, String username, String password) throws Exception {
-        
+        RegisterRequest RegRequest = new RegisterRequest(email, username, password);
+        String json = gson.toJson(RegRequest);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/register"))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200){
+            return gson.fromJson(response.body(), AuthData.class);
+
+        }
+        else {
+            throw new Exception("Could not register");
+        }
+
     }
 }
