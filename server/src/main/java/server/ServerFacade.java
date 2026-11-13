@@ -58,11 +58,7 @@ public class ServerFacade {
         }
     }
 
-    public void quit(String quit) throws Exception{
-        if (quit.equals("q")){
-            beak all;
-        }
-    }
+    
 
     public AuthData register(String email, String username, String password) throws Exception {
         RegisterRequest RegRequest = new RegisterRequest(email, username, password);
