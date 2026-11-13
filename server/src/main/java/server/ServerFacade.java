@@ -9,10 +9,7 @@ import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import service.JoinGameRequest;
-import service.LoginRequest;
-import service.LogoutRequest;
-import service.RegisterRequest;
+import service.*;
 
 public class ServerFacade {
     private final String serverUrl;
@@ -34,7 +31,7 @@ public class ServerFacade {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(json));
         if (response.statusCode() == 200) {
             return gson.fromJson(response.body(), AuthData.class);
         } else {
@@ -59,7 +56,40 @@ public class ServerFacade {
 
     }
 
-    
+    public ListGameResult listGame(String authToken) throws Exception {
+        ListGameRequest user = new ListGameRequest(authToken);
+        String json = gson.toJson(user);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/game"))
+                .header("Content-Type", "application/json")
+                .method("GET", HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(json));
+        if (response.statusCode() == 200){
+            return gson.fromJson(response.body(), ListGameResult.class);
+
+        } else {
+            throw new Exception("Unable to list games");
+        }
+    }
+
+    public int createGame(String authToken, String gameName) throws Exception {
+        CreateGameRequest user = new CreateGameRequest(authToken, gameName);
+        String json = gson.toJson(user);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/session"))
+                .header("Content-Type", "application/json")
+                .POST(HttpResponse.BodyHandlers.ofString(json))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200){
+            return gson.fromJson(response.body(), CreateGameResult.class);
+
+        } else {
+            throw new Exception("Unable to create game");
+        }
+
+    }
 
     public void joinGame(String authToken, int gameID, String color) throws Exception {
         JoinGameRequest joinRequest = new JoinGameRequest(authToken, color, gameID);
