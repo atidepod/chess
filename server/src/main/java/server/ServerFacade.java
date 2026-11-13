@@ -22,7 +22,7 @@ public class ServerFacade {
         this.gson = new Gson();
     }
 
-    public AuthData login(String username, String password) throws Exception{
+    public LoginResult login(String username, String password) throws Exception{
         LoginRequest user = new LoginRequest(username, password);
         String json = gson.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
@@ -33,7 +33,7 @@ public class ServerFacade {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
-            return gson.fromJson(response.body(), AuthData.class);
+            return gson.fromJson(response.body(), LoginResult.class);
         } else {
             throw new Exception("Login failed");
         }
@@ -45,8 +45,8 @@ public class ServerFacade {
         String json = gson.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/session"))
-                .header("Content-Type", "application/json")
-                .method("DELETE", HttpRequest.BodyPublishers.ofString(json))
+                .header("Authorization", authToken)
+                .DELETE()
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -61,8 +61,8 @@ public class ServerFacade {
         String json = gson.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/game"))
-                .header("Content-Type", "application/json")
-                .method("GET", HttpRequest.BodyPublishers.ofString(json))
+                .header("Authorization", authToken)
+                .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200){
@@ -79,6 +79,7 @@ public class ServerFacade {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/game"))
                 .header("Content-Type", "application/json")
+                .header("Authorization", authToken)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -100,7 +101,7 @@ public class ServerFacade {
                 .uri(URI.create(serverUrl + "/game"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", authToken)
-                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -111,19 +112,19 @@ public class ServerFacade {
 
 
 
-    public AuthData register(String username, String password, String email) throws Exception {
+    public RegisterResult register(String username, String password, String email) throws Exception {
         RegisterRequest RegRequest = new RegisterRequest(username, password, email);
         String json = gson.toJson(RegRequest);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/user"))
                 .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200){
-            return gson.fromJson(response.body(), AuthData.class);
+            return gson.fromJson(response.body(), RegisterResult.class);
 
         }
         else {
