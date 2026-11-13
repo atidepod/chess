@@ -10,6 +10,8 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import service.JoinGameRequest;
+import service.LoginRequest;
+import service.LogoutRequest;
 import service.RegisterRequest;
 
 public class ServerFacade {
@@ -24,7 +26,7 @@ public class ServerFacade {
     }
 
     public AuthData login(String username, String password) throws Exception{
-        UserData user = new UserData(username, password);
+        LoginRequest user = new LoginRequest(username, password);
         String json = gson.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + "/session"))
@@ -41,6 +43,24 @@ public class ServerFacade {
 
     }
 
+    public void logout(String authToken) throws Exception {
+        LogoutRequest user = new LogoutRequest(authToken);
+        String json = gson.toJson(user);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(serverUrl + "/session"))
+                .header("Content-Type", "application/json")
+                .method("DELETE", HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200){
+            throw new Exception("Logout failed");
+        }
+
+    }
+
+    
+
     public void joinGame(String authToken, int gameID, String color) throws Exception {
         JoinGameRequest joinRequest = new JoinGameRequest(authToken, color, gameID);
         String json = gson.toJson(joinRequest);
@@ -49,7 +69,7 @@ public class ServerFacade {
                 .uri(URI.create(serverUrl + "/game"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", authToken)
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -58,14 +78,14 @@ public class ServerFacade {
         }
     }
 
-    
 
-    public AuthData register(String email, String username, String password) throws Exception {
-        RegisterRequest RegRequest = new RegisterRequest(email, username, password);
+
+    public AuthData register(String username, String password, String email) throws Exception {
+        RegisterRequest RegRequest = new RegisterRequest(username, password, email);
         String json = gson.toJson(RegRequest);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/register"))
+                .uri(URI.create(serverUrl + "/user"))
                 .header("Content-Type", "application/json")
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
