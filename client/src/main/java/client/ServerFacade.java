@@ -120,8 +120,7 @@ public class ServerFacade {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("Register status: " + response.statusCode());
-        System.out.println("Register body: " + response.body());
+
         if (response.statusCode() == 200){
             return gson.fromJson(response.body(), RegisterResult.class);
 
