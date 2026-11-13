@@ -31,7 +31,7 @@ public class ServerFacade {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(json));
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
             return gson.fromJson(response.body(), AuthData.class);
         } else {
@@ -64,7 +64,7 @@ public class ServerFacade {
                 .header("Content-Type", "application/json")
                 .method("GET", HttpRequest.BodyPublishers.ofString(json))
                 .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(json));
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200){
             return gson.fromJson(response.body(), ListGameResult.class);
 
@@ -77,13 +77,14 @@ public class ServerFacade {
         CreateGameRequest user = new CreateGameRequest(authToken, gameName);
         String json = gson.toJson(user);
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(serverUrl + "/session"))
+                .uri(URI.create(serverUrl + "/game"))
                 .header("Content-Type", "application/json")
-                .POST(HttpResponse.BodyHandlers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200){
-            return gson.fromJson(response.body(), CreateGameResult.class);
+            CreateGameResult result = gson.fromJson(response.body(), CreateGameResult.class);
+            return result.gameID();
 
         } else {
             throw new Exception("Unable to create game");
