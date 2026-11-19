@@ -37,6 +37,15 @@ public class Server {
         javalin.get("/game", userHandler::listGame);
         javalin.post("/game", userHandler::createGame);
         javalin.put("/game", userHandler::joinGame);
+        javalin.ws("/ws", ws -> {
+            ws.onConnect(ctx -> {
+                ctx.enableAutomaticPings();
+                System.out.println("Websocket connected");
+
+            });
+            ws.onMessage(ctx -> ctx.send("Websocket response: " + ctx.message()));
+            ws.onClose(ctx -> System.out.println("Websocket closed"));
+        });
 
 
 
